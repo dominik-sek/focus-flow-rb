@@ -8,9 +8,14 @@
 
   <div data-controller="timer" class="flex flex-col items-center justify-between mb-4">
     <span class="text-3xl font-bold" data-timer-target="timerDisplay" id="timer-display">00:00:00</span>
-    <button data-action="click->timer#start" type="button" id="start-timer" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-      Start Timer
-    </button>
+        <button 
+        data-timer-target="toggleButton"
+        data-action="click->timer#toggle" 
+        type="button" 
+        id="start-timer" 
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+          Start
+       </button>
   </div>
 
 
