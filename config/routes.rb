@@ -7,8 +7,10 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   scope "/api" do
+    get "time_entry/current_month", to: "time_entry#current_month"
     resources :time_entry
   end
+
 
   root "dashboard#index"
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)

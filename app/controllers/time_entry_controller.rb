@@ -2,6 +2,19 @@ class TimeEntryController < ApplicationController
   def index
   end
 
+  def current_month
+    current_month_range = Time.current.beginning_of_month..Time.current.end_of_month
+    time_entries = TimeEntry.where(started_at: current_month_range).order(started_at: :desc)
+
+    if params[:limit].present?
+      limit = params[:limit].to_i
+      time_entries = time_entries.limit(limit)
+    end
+    render json: time_entries
+  end
+
+
+
   def show
   end
 
