@@ -6,8 +6,9 @@ class TimeEntryController < ApplicationController
   end
 
   def create
-    @time_entry = TimeEntry.create(time_entry_params)
-    flash[:notice] = "Time entry created successfully"
+    attrs = time_entry_params
+    attrs[:name] = "No task name" if attrs[:name].blank?
+    @time_entry = TimeEntry.create(attrs)
     render json: @time_entry, status: :created
   end
 

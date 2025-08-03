@@ -121,6 +121,8 @@ export default class extends Controller {
     this.duration = 0
     this.started_at = 0
     this.finished_at = 0
+    this.projectNameTarget.value = "";
+    this.timerDisplayTarget.textContent = "00:00:00";
 
   }
 
