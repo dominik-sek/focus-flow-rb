@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_02_082408) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_03_095922) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_082408) do
     t.string "name"
     t.datetime "started_at", precision: nil
     t.datetime "finished_at", precision: nil
-    t.datetime "duration", precision: nil
+    t.integer "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

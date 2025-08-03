@@ -1,12 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["timerDisplay", "toggleButton"]
+  static targets = ["timerDisplay", "projectName", "toggleButton"]
   timerInterval = null
   hours = 0
   minutes = 0
   seconds = 0
   isRunning = false
+
+  started_at = 0
+  finished_at = 0
+  duration = 0
 
   reset() {
     this.hours = 0
@@ -21,8 +25,9 @@ export default class extends Controller {
     this.toggleButtonTarget.textContent = "Start"
   }
   connect() {
+    //check if api is alive, show loaders...
     this.reset()
-    console.log("TimerController connected", this.element);    
+    console.log("TimerController connected", this.element);
   }
   toggle() {
     if (this.isRunning) {
@@ -36,6 +41,10 @@ export default class extends Controller {
     this.reset()
     this.toggleButtonTarget.textContent = "Stop";
     this.isRunning = true;
+
+    this.started_at = new Date().toISOString()
+
+
     this.timerInterval = setInterval(() => {
       this.seconds++;
       if (this.seconds >= 60) {
@@ -58,8 +67,61 @@ export default class extends Controller {
   }
 
   stop() {
+    this.finished_at = new Date().toISOString()
+
+
+    const durationSeconds = Math.floor((new Date(this.finished_at) - new Date(this.started_at)) / 1000)
+
+    this.duration = durationSeconds
     window.clearInterval(this.timerInterval);
     this.isRunning = false;
     this.toggleButtonTarget.textContent = "Start";
+    this.submit()
   }
+
+  async submit() {
+    const data = {
+      name: this.projectNameTarget.value,
+      started_at: this.started_at,
+      finished_at: this.finished_at,
+      duration: this.duration
+    }
+
+
+    console.log(data)
+
+    await fetch('/api/time_entry', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+
+      },
+      body: JSON.stringify(data)
+    }).then(response => {
+      if (!response.ok) throw new Error("Network error")
+      return response.json()
+    })
+      .then(data => {
+        console.log("Success:", data)
+        document.dispatchEvent(new CustomEvent("toast:show", {
+          detail: {
+            message: "Entry saved!",
+            type: "success", 
+            duration: 3000
+          },
+          bubbles: true
+        }))
+      })
+      .catch(error => {
+        console.error("Error:", error)
+      })
+
+
+    this.duration = 0
+    this.started_at = 0
+    this.finished_at = 0
+
+  }
+
 }

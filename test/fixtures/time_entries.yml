@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  started_at: 2025-08-03 11:59:22
+  finished_at: 2025-08-03 11:59:22
+  duration: 2025-08-03 11:59:22
+
+two:
+  name: MyString
+  started_at: 2025-08-03 11:59:22
+  finished_at: 2025-08-03 11:59:22
+  duration: 2025-08-03 11:59:22
