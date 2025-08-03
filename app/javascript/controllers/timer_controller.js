@@ -103,14 +103,15 @@ export default class extends Controller {
     })
       .then(data => {
         console.log("Success:", data)
-        document.dispatchEvent(new CustomEvent("toast:show", {
+        window.dispatchEvent(new CustomEvent("toast:show", {
           detail: {
             message: "Entry saved!",
             type: "success", 
             duration: 3000
-          },
-          bubbles: true
+          }
         }))
+
+        window.dispatchEvent(new CustomEvent("time-entry:submitted"))
       })
       .catch(error => {
         console.error("Error:", error)

@@ -4,10 +4,18 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ['tbody', 'skeleton']
   connect() {
-    
+    this.loadEntries()
+    window.addEventListener("time-entry:submitted", this.refresh.bind(this))
+  }
+
+  disconnect() {
+    window.removeEventListener("time-entry:submitted", this.refresh.bind(this))
+  }
+
+  refresh() {
     this.loadEntries()
   }
- async loadEntries() {
+  async loadEntries() {
     this.showLoader()
 
     try {
@@ -16,6 +24,9 @@ export default class extends Controller {
       const entries = json.data || json
 
       this.tbodyTarget.innerHTML = entries.map(entry => this.buildRow(entry)).join("")
+      if (entries.length === 0) {
+        this.tbodyTarget.innerHTML = "<tr><td colspan='4' class='px-6 py-4'>No entries yet, they will be added automatically after you stop the timer!</td></tr>"
+      }
     } catch (e) {
       console.error("Failed to load entries", e)
       this.tbodyTarget.innerHTML = "<tr><td colspan='4' class='px-6 py-4'>Error loading data</td></tr>"
@@ -40,7 +51,7 @@ export default class extends Controller {
       const s = (secs % 60).toString().padStart(2, '0')
       return `${h}:${m}:${s}`
     }
-    
+
 
     return `
       <tr class="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800 border-b dark:border-gray-700">
