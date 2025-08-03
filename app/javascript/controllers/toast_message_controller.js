@@ -14,8 +14,8 @@ export default class extends Controller {
   show(event) {
     const { message, type = "success", duration = 3000 } = event.detail
 
-    this.toastDefaultTarget.classList.remove("hidden")
-    this.toastDefaultTarget.classList.add("flex")
+    this.toastDefaultTarget.classList.remove("toast-closing", "hidden")
+    this.toastDefaultTarget.classList.add("flex", "toast-visible")
 
     this.messageTextTarget.textContent = message
 
@@ -33,7 +33,6 @@ export default class extends Controller {
   }
 
   close() {
-    this.toastDefaultTarget.classList.add("hidden")
-    this.toastDefaultTarget.classList.remove("flex")
+    this.toastDefaultTarget.classList.add("toast-closing")
   }
 }
