@@ -88,7 +88,6 @@ export default class extends Controller {
     }
 
 
-    console.log(data)
 
     await fetch('/api/time_entry', {
       method: 'POST',
