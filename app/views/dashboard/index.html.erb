@@ -1,17 +1,29 @@
 <div class="w-full h-full grid grid-cols-1 grid-rows-8 lg:grid-cols-6 gap-4 grid-flow-row text-gray-900 dark:text-white" >
   <div class="lg:col-span-4 row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
     <h2 class="mb-2 text-2xl font-bold tracking-tight ">Timer</h2>
-    <div data-controller="timer" class="flex flex-col items-center justify-between mb-4">
-      <input type="text" data-timer-target="projectName" placeholder="Enter task name" class="w-full p-2 border border-gray-300 rounded mb-4">
-      <span class="text-3xl font-bold" data-timer-target="timerDisplay" id="timer-display">00:00:00</span>
-      <button 
+    <div data-controller="timer" class="flex flex-col items-center justify-around">
+      <input type="text" id="task-name" data-timer-target="taskName" placeholder="Enter task name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+      <form class="w-full mx-auto">
+        <label for="countries" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Select a project</label>
+        <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option selected>No project</option>
+          <option value="US">United States</option>
+          <option value="CA">Canada</option>
+          <option value="FR">France</option>
+          <option value="DE">Germany</option>
+        </select>
+      </form>
+      <div class="flex flex-col gap-2 w-full">
+        <span class="text-3xl font-bold" data-timer-target="timerDisplay" id="timer-display">00:00:00</span>
+        <button 
         data-timer-target="toggleButton"
         data-action="click->timer#toggle" 
-        type="button" 
-        id="start-timer" 
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-        Start
-      </button>
+          type="button" 
+          id="start-timer" 
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+          Start
+        </button>
+      </div>
     </div>
   </div>
   <div class="lg:col-span-2 row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
@@ -36,6 +48,5 @@
         </tbody>
       </table>
     </div>
-
   </div>
 </div>

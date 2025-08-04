@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
+  get "sign_up", to: "users#new", as: :sign_up
+  post "sign_up", to: "users#create"
+
   scope "/api" do
     get "time_entry/current_month", to: "time_entry#current_month"
     resources :time_entry

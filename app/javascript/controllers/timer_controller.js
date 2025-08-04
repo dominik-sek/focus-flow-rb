@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["timerDisplay", "projectName", "toggleButton"]
+  static targets = ["timerDisplay", "taskName", "toggleButton"]
   timerInterval = null
   hours = 0
   minutes = 0
@@ -81,7 +81,7 @@ export default class extends Controller {
 
   async submit() {
     const data = {
-      name: this.projectNameTarget.value,
+      name: this.taskNameTarget.value,
       started_at: this.started_at,
       finished_at: this.finished_at,
       duration: this.duration
@@ -121,7 +121,7 @@ export default class extends Controller {
     this.duration = 0
     this.started_at = 0
     this.finished_at = 0
-    this.projectNameTarget.value = "";
+    this.taskNameTarget.value = "";
     this.timerDisplayTarget.textContent = "00:00:00";
 
   }
