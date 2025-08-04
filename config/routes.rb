@@ -9,6 +9,13 @@ Rails.application.routes.draw do
   get "sign_up", to: "users#new", as: :sign_up
   post "sign_up", to: "users#create"
 
+  get "login", to: "sessions#new", as: :login
+  post "login", to: "sessions#create"
+
+  delete "logout", to: "sessions#destroy", as: :logout
+  get "logout", to: "sessions#destroy"
+
+
   scope "/api" do
     get "time_entry/current_month", to: "time_entry#current_month"
     resources :time_entry
