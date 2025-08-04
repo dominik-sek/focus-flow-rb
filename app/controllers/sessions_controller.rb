@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
   before_action :redirect_if_authenticated, only: [ :create, :new ]
-  before_action :authenticate_user!, only: [ :destroy ]
   def new
   end
 
@@ -22,6 +21,6 @@ class SessionsController < ApplicationController
 
   def destroy
     logout
-    redirect_to root_url
+    redirect_to login_path, notice: "Logged out"
   end
 end
