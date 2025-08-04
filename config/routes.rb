@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   post "login", to: "sessions#create"
 
   delete "logout", to: "sessions#destroy", as: :logout
-  get "logout", to: "sessions#destroy"
 
 
   scope "/api" do
