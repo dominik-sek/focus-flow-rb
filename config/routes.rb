@@ -17,7 +17,10 @@ Rails.application.routes.draw do
 
   scope "/api" do
     get "time_entry/current_month", to: "time_entry#current_month"
+    get "projects", to: "project#all_users_projects"
     resources :time_entry
+    resources :project
+    # resources :user
   end
 
 

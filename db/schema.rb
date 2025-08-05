@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_183724) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_05_195636) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -32,6 +32,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_183724) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
   create_table "time_entries", force: :cascade do |t|
@@ -56,6 +58,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_183724) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "projects", "users"
   add_foreign_key "time_entries", "projects"
   add_foreign_key "time_entries", "users"
 end

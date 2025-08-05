@@ -22,6 +22,7 @@ export default class extends Controller {
       const response = await fetch("/api/time_entry/current_month?limit=5")
       const json = await response.json()
       const entries = json.data || json
+      console.log(entries)
 
       this.tbodyTarget.innerHTML = entries.map(entry => this.buildRow(entry)).join("")
       if (entries.length === 0) {

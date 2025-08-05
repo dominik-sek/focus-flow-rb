@@ -44,7 +44,7 @@ export default class extends Controller {
   }
 
   start() {
-    
+
     this.reset()
     this.toggleButtonTarget.textContent = "Stop";
     this.isRunning = true;
@@ -80,9 +80,9 @@ export default class extends Controller {
     window.clearInterval(this.timerInterval);
     this.isRunning = false;
     this.toggleButtonTarget.textContent = "Start";
-    
+
     const taskName = this.taskNameTarget.value;
-    this.taskNameTarget.value="";
+    this.taskNameTarget.value = "";
     this.submit(taskName, this.started_at, this.finished_at, this.duration)
 
     this.reset()
@@ -91,9 +91,9 @@ export default class extends Controller {
   async submit(taskName, started_at, finished_at, duration) {
     const data = {
       name: taskName,
-      started_at: this.started_at,
-      finished_at: this.finished_at,
-      duration: this.duration
+      started_at: started_at,
+      finished_at: finished_at,
+      duration: duration
     }
 
     await fetch('/api/time_entry', {
@@ -119,8 +119,14 @@ export default class extends Controller {
 
         window.dispatchEvent(new CustomEvent("time-entry:submitted"))
       })
-      .catch(error => {
-        console.error("Error:", error)
+      .catch(async error => {
+        window.dispatchEvent(new CustomEvent("toast:show", {
+          detail: {
+            message: error,
+            type: "error",
+            duration: 3000
+          }
+        }))
       })
 
   }
