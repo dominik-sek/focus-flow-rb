@@ -28,13 +28,15 @@
 
   .toast-visible {
     animation: toastIn 0.3s forwards;
+    z-index: 50;
+    pointer-events: auto;
   }
 
-  .toast-closing {
+  .toast-closed {
     animation: toastOut 0.3s forwards;
+    z-index: -50;
+    pointer-events: none;
   }
 
-  .toast-hidden {
-    display: none;
-  }
+
 }

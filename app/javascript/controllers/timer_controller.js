@@ -16,6 +16,12 @@ export default class extends Controller {
     this.hours = 0
     this.minutes = 0
     this.seconds = 0
+
+    this.duration = 0
+    this.started_at = 0
+    this.finished_at = 0
+    this.timerDisplayTarget.textContent = "00:00:00";
+
     this.updateDisplay()
     if (this.timerInterval) {
       clearInterval(this.timerInterval)
@@ -24,20 +30,21 @@ export default class extends Controller {
     this.isRunning = false
     this.toggleButtonTarget.textContent = "Start"
   }
+
   connect() {
-    //check if api is alive, show loaders...
     this.reset()
-    console.log("TimerController connected", this.element);
   }
+
   toggle() {
     if (this.isRunning) {
       this.stop();
     } else {
       this.start();
     }
-    //this.isRunning = !this.isRunning;
   }
+
   start() {
+    
     this.reset()
     this.toggleButtonTarget.textContent = "Stop";
     this.isRunning = true;
@@ -66,28 +73,28 @@ export default class extends Controller {
     this.timerDisplayTarget.textContent = `${hours}:${minutes}:${seconds}`;
   }
 
-  stop() {
+  async stop() {
     this.finished_at = new Date().toISOString()
-
-
     const durationSeconds = Math.floor((new Date(this.finished_at) - new Date(this.started_at)) / 1000)
-
     this.duration = durationSeconds
     window.clearInterval(this.timerInterval);
     this.isRunning = false;
     this.toggleButtonTarget.textContent = "Start";
-    this.submit()
+    
+    const taskName = this.taskNameTarget.value;
+    this.taskNameTarget.value="";
+    this.submit(taskName, this.started_at, this.finished_at, this.duration)
+
+    this.reset()
   }
 
-  async submit() {
+  async submit(taskName, started_at, finished_at, duration) {
     const data = {
-      name: this.taskNameTarget.value,
+      name: taskName,
       started_at: this.started_at,
       finished_at: this.finished_at,
       duration: this.duration
     }
-
-
 
     await fetch('/api/time_entry', {
       method: 'POST',
@@ -102,11 +109,10 @@ export default class extends Controller {
       return response.json()
     })
       .then(data => {
-        console.log("Success:", data)
         window.dispatchEvent(new CustomEvent("toast:show", {
           detail: {
             message: "Entry saved!",
-            type: "success", 
+            type: "success",
             duration: 3000
           }
         }))
@@ -116,13 +122,6 @@ export default class extends Controller {
       .catch(error => {
         console.error("Error:", error)
       })
-
-
-    this.duration = 0
-    this.started_at = 0
-    this.finished_at = 0
-    this.taskNameTarget.value = "";
-    this.timerDisplayTarget.textContent = "00:00:00";
 
   }
 

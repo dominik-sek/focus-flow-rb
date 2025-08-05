@@ -14,9 +14,9 @@ export default class extends Controller {
 
   }
 
-
-
   toggle() {
+    event.stopPropagation()
+
     this.isOpen = !this.isOpen
     if (this.isOpen) {
       document.addEventListener("click", this.checkIfOutsideClick)
