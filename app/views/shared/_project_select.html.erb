@@ -1,7 +1,6 @@
 <form data-controller="project-select" class="w-full mx-auto">
   <label for="projects" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Select a project</label>
-  <select id="projects" data-project-select-target="projectSelect" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-    <%# stimulus data %>
+  <select data-project-select-target="projectSelect"  id="projects" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
     <option value="new">+ Create new project</option>
   </select>
 </form>

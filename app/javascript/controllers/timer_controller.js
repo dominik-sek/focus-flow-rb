@@ -11,6 +11,7 @@ export default class extends Controller {
   started_at = 0
   finished_at = 0
   duration = 0
+  selectedProject = null;
 
   reset() {
     this.hours = 0
@@ -33,6 +34,10 @@ export default class extends Controller {
 
   connect() {
     this.reset()
+    window.addEventListener("project:selected", (event) => {
+      this.selectedProject = event.detail;
+      console.log("Selected project:", this.selectedProject);
+    });
   }
 
   toggle() {
@@ -93,8 +98,10 @@ export default class extends Controller {
       name: taskName,
       started_at: started_at,
       finished_at: finished_at,
-      duration: duration
+      duration: duration,
+      project_id: this.selectedProject?.id //nullable
     }
+    console.log(data)
 
     await fetch('/api/time_entry', {
       method: 'POST',

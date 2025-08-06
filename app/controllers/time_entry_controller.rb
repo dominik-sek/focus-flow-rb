@@ -22,6 +22,7 @@ class TimeEntryController < ApplicationController
     attrs = time_entry_params
     attrs[:name] = "No task name" if attrs[:name].blank?
     attrs[:user_id] = session[:current_user_id]
+    attrs[:project_id].to_i
 
     @time_entry = TimeEntry.create(attrs)
     if @time_entry.save
@@ -36,6 +37,6 @@ class TimeEntryController < ApplicationController
 
   private
   def time_entry_params
-    params.require(:time_entry).permit(:name, :started_at, :finished_at, :duration)
+    params.require(:time_entry).permit(:name, :started_at, :finished_at, :duration, :project_id)
   end
 end
