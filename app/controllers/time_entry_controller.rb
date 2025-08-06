@@ -22,6 +22,7 @@ class TimeEntryController < ApplicationController
     attrs = time_entry_params
     attrs[:name] = "No task name" if attrs[:name].blank?
     attrs[:user_id] = session[:current_user_id]
+    # todo: create a project no project? idk
     attrs[:project_id].to_i
 
     @time_entry = TimeEntry.create(attrs)

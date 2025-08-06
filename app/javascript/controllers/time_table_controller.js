@@ -59,6 +59,7 @@ export default class extends Controller {
         <td class="px-6 py-4 font-medium text-gray-900 dark:text-white max-w-xs truncate " title="${entry.name}">${entry.name}</td>
         <td class="px-6 py-4 whitespace-nowrap min-w-fit">${formatTime(entry.started_at)}</td>
         <td class="px-6 py-4 whitespace-nowrap min-w-fit">${formatTime(entry.finished_at)}</td>
+        <td class="px-6 py-4 whitespace-nowrap min-w-fit">${entry.project?.name || "No project"}</td>
         <td class="px-6 py-4">${formatDuration(entry.duration)}</td>
       </tr>
     `
