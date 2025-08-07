@@ -5,8 +5,19 @@ class ProjectController < ApplicationController
   end
 
   def hours_per_project
-    @projects = Project.where(user_id: session[:current_user_id]).includes(:time_entries).group(:id).sum(:duration)
-      render json: @projects, status: :ok
+    time_entries = TimeEntry
+      .where(user_id: session[:current_user_id])
+      .left_joins(:project)
+      .group("projects.id", "projects.name")
+      .select("projects.name, COALESCE(SUM(time_entries.duration), 0) AS duration")
+
+    result = time_entries.map do |entry|
+      {
+        name: entry.name || "No project",
+        duration: entry.duration.to_i
+      }
+    end
+    render json: result, status: :ok
   end
 
   def create
