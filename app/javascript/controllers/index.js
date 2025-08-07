@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import DailyChartController from "./daily_chart_controller"
+application.register("daily-chart", DailyChartController)
+
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
 

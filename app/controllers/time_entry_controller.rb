@@ -13,6 +13,17 @@ class TimeEntryController < ApplicationController
     render json: time_entries, include: :project
   end
 
+  def daily_hours
+    daily_hours_entries = TimeEntry
+    .where(user_id: session[:current_user_id])
+    .group("DATE(started_at)")
+    .sum(:duration)
+    .map { |day, duration| { day: day, total_duration: duration.to_i } }
+    # .sort_by { |entry| entry[:day] }
+    #
+    render json: daily_hours_entries
+  end
+
 
 
   def show

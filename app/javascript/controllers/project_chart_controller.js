@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import * as echarts from 'echarts';
+import { formatDuration } from "../helpers/formatDuration";
+
 // Connects to data-controller="project-chart"
 export default class extends Controller {
   static targets = ["chartContainer"]
@@ -47,14 +49,10 @@ export default class extends Controller {
     this.refresh()
   }
 
-  formatDuration = secs => {
-    const h = Math.floor(secs / 3600).toString().padStart(2, '0')
-    const m = Math.floor((secs % 3600) / 60).toString().padStart(2, '0')
-    const s = (secs % 60).toString().padStart(2, '0')
-    return `${h}:${m}:${s}`
-  }
+
 
   async getProjectHours() {
+
     await fetch('api/projects/summary').then(async (res) => {
       const json = await res.json()
       this.option.series[0].data = json.map((item) => ({
@@ -64,7 +62,7 @@ export default class extends Controller {
       this.option.series[0].name = "Project Hours"
       this.option.legend.data = json.map((item) => item.name)
       this.option.tooltip.formatter = (params) => {
-        return `${params.name}: ${this.formatDuration(params.value)} hours`
+        return `${params.name}: ${formatDuration(params.value)} hours`
       }
 
       this.chart.setOption(this.option)

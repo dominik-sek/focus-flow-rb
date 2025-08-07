@@ -74,6 +74,7 @@ Rails.application.routes.draw do
 
   scope "/api" do
     get "time_entry/current_month", to: "time_entry#current_month"
+    get "time_entry/daily_hours", to: "time_entry#daily_hours"
     get "projects", to: "project#all_users_projects"
     get "projects/summary", to: "project#hours_per_project"
     resources :time_entry
