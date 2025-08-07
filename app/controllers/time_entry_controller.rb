@@ -14,8 +14,14 @@ class TimeEntryController < ApplicationController
   end
 
   def daily_hours
+    week_offset = params[:week_offset].to_i || 0
+    start_date = Date.today.beginning_of_week - week_offset.weeks
+    end_date = start_date.end_of_week
+
+
     daily_hours_entries = TimeEntry
     .where(user_id: session[:current_user_id])
+    .where(started_at: start_date.beginning_of_day..end_date.end_of_day)
     .group("DATE(started_at)")
     .sum(:duration)
     .map { |day, duration| { day: day, total_duration: duration.to_i } }
