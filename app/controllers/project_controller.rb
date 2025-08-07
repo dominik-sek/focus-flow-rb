@@ -4,6 +4,11 @@ class ProjectController < ApplicationController
       render json: @projects, status: :ok
   end
 
+  def hours_per_project
+    @projects = Project.where(user_id: session[:current_user_id]).includes(:time_entries).group(:id).sum(:duration)
+      render json: @projects, status: :ok
+  end
+
   def create
     attrs = project_params
     attrs[:user_id] = session[:current_user_id]
