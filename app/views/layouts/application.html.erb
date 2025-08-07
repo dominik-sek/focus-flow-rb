@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="h-full" lang="en">
   <head>
-    <title><%= content_for(:title) || "Focus Flow Rb" %></title>
+    <title><%= content_for(:title) || "Focus Flow" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" href="/icon.png">
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
   <body class="dark:bg-gray-900 antialiased text-gray-900 font-poppins h-full relative">
     <div class="absolute top-0 right-0 py-6 px-6 min-w-xs">
