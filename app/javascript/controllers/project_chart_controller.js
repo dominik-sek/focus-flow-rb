@@ -5,8 +5,13 @@ export default class extends Controller {
   static targets = ["chartContainer"]
   chart = echarts.init(this.chartContainerTarget)
   option = {}
-  connect() {
+
+  refresh() {
     this.getProjectHours()
+  }
+
+  connect() {
+    window.addEventListener("time-entry:submitted", this.refresh.bind(this))
     this.option = {
       tooltip: {
         trigger: 'item'
@@ -39,11 +44,30 @@ export default class extends Controller {
       ]
     };
     this.chart.setOption(this.option)
+    this.refresh()
   }
-  async getProjectHours(){
-    await fetch('api/projects/summary').then(async (res)=>{
+
+  formatDuration = secs => {
+    const h = Math.floor(secs / 3600).toString().padStart(2, '0')
+    const m = Math.floor((secs % 3600) / 60).toString().padStart(2, '0')
+    const s = (secs % 60).toString().padStart(2, '0')
+    return `${h}:${m}:${s}`
+  }
+
+  async getProjectHours() {
+    await fetch('api/projects/summary').then(async (res) => {
       const json = await res.json()
-      console.log(json)
+      this.option.series[0].data = json.map((item) => ({
+        value: item.duration,
+        name: item.name
+      }))
+      this.option.series[0].name = "Project Hours"
+      this.option.legend.data = json.map((item) => item.name)
+      this.option.tooltip.formatter = (params) => {
+        return `${params.name}: ${this.formatDuration(params.value)} hours`
+      }
+
+      this.chart.setOption(this.option)
     })
 
   }
