@@ -34,10 +34,38 @@ export default class extends Controller {
 
   connect() {
     this.reset()
-    window.addEventListener("project:selected", (event) => {
-      this.selectedProject = event.detail;
-      console.log("Selected project:", this.selectedProject);
-    });
+    this.projectSelectedChanged()
+
+    const saved = localStorage.getItem('activeTimer')
+    console.log(saved)
+    if (saved) {
+      const { isActive, startedAt, taskName, projectName } = JSON.parse(saved)
+      if (isActive) {
+        console.log('found a timer')
+        const elapsedSinceClosed = Math.floor((new Date() - new Date(startedAt)) / 1000)
+        this.taskNameTarget.value = taskName
+        this.selectedProject = projectName
+        this.hours = Math.floor(elapsedSinceClosed / 1000)
+        this.minutes = Math.floor((elapsedSinceClosed % 3600) / 60)
+        this.seconds = elapsedSinceClosed % 60
+        this.started_at = startedAt
+        this.isRunning = true
+        this.toggleButtonTarget.textContent = 'Stop'
+        this.updateDisplay()
+        this.timerInterval = setInterval(() => {
+          this.seconds++;
+          if (this.seconds >= 60) {
+            this.seconds = 0;
+            this.minutes++;
+          }
+          if (this.minutes >= 60) {
+            this.minutes = 0;
+            this.hours++;
+          }
+          this.updateDisplay();
+        }, 1000);
+      }
+    }
   }
 
   toggle() {
@@ -49,12 +77,20 @@ export default class extends Controller {
   }
 
   start() {
+    
 
     this.reset()
     this.toggleButtonTarget.textContent = "Stop";
     this.isRunning = true;
 
     this.started_at = new Date().toISOString()
+
+    localStorage.setItem("activeTimer", JSON.stringify({
+      isActive: this.isRunning,
+      startedAt: this.started_at,
+      taskName: this.taskNameTarget.value,
+      projectName: this.selectedProject
+    }))
 
 
     this.timerInterval = setInterval(() => {
@@ -90,7 +126,9 @@ export default class extends Controller {
     this.taskNameTarget.value = "";
     this.submit(taskName, this.started_at, this.finished_at, this.duration)
 
+    localStorage.removeItem('activeTimer')
     this.reset()
+
   }
 
   async submit(taskName, started_at, finished_at, duration) {
@@ -136,6 +174,25 @@ export default class extends Controller {
         }))
       })
 
+  }
+  
+  taskNameChanged(){
+    const saved = JSON.parse(localStorage.getItem('activeTimer'))
+    saved.taskName = this.taskNameTarget.value
+    localStorage.setItem("activeTimer", JSON.stringify(saved))
+  }
+  projectSelectedChanged(){
+
+      window.addEventListener("project:selected", (event) => {
+        this.selectedProject = event.detail;
+        console.log(event.detail)
+        const saved = JSON.parse(localStorage.getItem('activeTimer')) 
+        saved.projectName = event.detail;
+
+
+        localStorage.setItem("activeTimer", JSON.stringify(saved))
+
+    });
   }
 
 }

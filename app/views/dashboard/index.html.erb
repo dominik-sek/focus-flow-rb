@@ -1,10 +1,10 @@
-<div class="w-full h-full grid grid-cols-1 grid-rows-8 lg:grid-cols-6 gap-4 grid-flow-row text-gray-900 dark:text-white" >
+<div class="w-full h-full grid grid-cols-1 grid-rows-4 lg:grid-cols-6 gap-4 grid-flow-row text-gray-900 dark:text-white" >
   <%# <%= render partial: "shared/modal_crud" %>
   <div class="lg:col-span-4 row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
     <h2 class="mb-2 text-2xl font-bold tracking-tight ">Timer</h2>
     <div data-controller="timer" class="flex flex-col items-center justify-around">
-      <input type="text" id="task-name" data-timer-target="taskName" placeholder="Enter task name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-      <%= render partial: "shared/project_select"%>
+      <input type="text" id="task-name" data-timer-target="taskName" data-action="input->timer#taskNameChanged" placeholder="Enter task name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+      <%= render partial: "shared/project_select" %>
       <div class="flex flex-col gap-2 w-full">
         <span class="text-3xl font-bold" data-timer-target="timerDisplay" id="timer-display">00:00:00</span>
         <button 
@@ -42,7 +42,7 @@
       </table>
     </div>
   </div>
-  <div data-controller="daily-chart" class="col-span-full row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
+  <div data-controller="daily-chart" class="overflow-x-auto  col-span-full row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
     <h2 class="text-xl font-semibold mb-4">Daily data</h2>
     <div data-daily-chart-target="chartContainer" class="w-full h-128">
     </div>
