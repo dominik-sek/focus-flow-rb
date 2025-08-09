@@ -13,18 +13,29 @@
       </button>
       <div data-user-menu-target="dropdownMenu" class="items-center justify-between hidden w-full  md:order-1 absolute top-full left-0 p-2" id="navbar-hamburger">
         <ul class="flex flex-col font-medium p-4 border border-gray-100 rounded-lg bg-gray-50  rtl:space-x-reverse  dark:bg-gray-800 dark:border-gray-700">
-          <li>
-            <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded-sm dark:bg-blue-600" aria-current="page">Home</a>
-          </li>
-          <li>
-            <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Services</a>
-          </li>
-          <li>
-            <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white">Pricing</a>
-          </li>
-          <li>
-            <%= link_to 'Logout', logout_path, turbo_method: :delete, data: { turbo_method: :delete }, class: "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" %>
-          </li>
+          <% @nav_links = [
+            {
+              name: "Home", path: root_path
+            },
+            {
+              name: "Projects", path: projects_path
+            },
+            {
+              name: "Reports", path: reports_path
+            },
+            {
+              name: "Logout", path: logout_path
+            }
+          ] %>
+          <% @nav_links.each do |link| %>
+            <%= link_to link[:name],
+                        link[:path],
+                        class: [
+                          "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white",
+                          "block py-2 px-3 text-white bg-blue-700 rounded-sm dark:bg-blue-600": current_page?(link[:path]),
+                          "border-transparent text-stone-700": !current_page?(link[:path]),
+                        ] %>
+          <% end %>
         </ul>
       </div>
     </div>
