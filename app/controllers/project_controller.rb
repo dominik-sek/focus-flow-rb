@@ -5,8 +5,11 @@ class ProjectController < ApplicationController
   end
 
   def hours_per_project
+    today_range = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
+
     time_entries = TimeEntry
       .where(user_id: session[:current_user_id])
+      .where(created_at: today_range)
       .left_joins(:project)
       .group("projects.id", "projects.name")
       .select("projects.name, COALESCE(SUM(time_entries.duration), 0) AS duration")

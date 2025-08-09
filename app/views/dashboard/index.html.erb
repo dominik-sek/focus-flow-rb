@@ -1,28 +1,31 @@
-<div class="w-full h-full grid grid-cols-1 grid-rows-4 lg:grid-cols-6 gap-4 grid-flow-row text-gray-900 dark:text-white" >
-  <%# <%= render partial: "shared/modal_crud" %>
-  <div class="lg:col-span-4 row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
+<div class="w-full h-full flex flex-wrap gap-2 text-gray-900 dark:text-white " >
+  <!-- timer ^ -->
+  <div class="self-strech flex-3 p-6 bg-white border flex flex-col border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
     <h2 class="mb-2 text-2xl font-bold tracking-tight ">Timer</h2>
-    <div data-controller="timer" class="flex flex-col items-center justify-around">
-      <input type="text" id="task-name" data-timer-target="taskName" data-action="input->timer#taskNameChanged" placeholder="Enter task name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-      <%= render partial: "shared/project_select" %>
-      <div class="flex flex-col gap-2 w-full">
+    <div data-controller="timer" class="flex flex-col gap-2 h-full justify-around">
+      <div>
+        <input type="text" id="task-name" data-timer-target="taskName" data-action="input->timer#taskNameChanged" placeholder="Enter task name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+        <%= render partial: "shared/project_select" %>
+      </div>
+      <div class="flex gap-2 w-full justify-between">
         <span class="text-3xl font-bold" data-timer-target="timerDisplay" id="timer-display">00:00:00</span>
         <button 
         data-timer-target="toggleButton"
         data-action="click->timer#toggle" 
           type="button" 
           id="start-timer" 
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+          class="w-36 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
           Start
         </button>
       </div>
     </div>
   </div>
-  <div data-controller="project-chart" class="lg:col-span-2 row-span-3 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
-    <h2 class="text-xl font-semibold mb-4">Project hours distribution</h2>
-    <div data-project-chart-target="chartContainer" class="w-64 h-64"></div>
+  <!-- timer ^ -->
+  <div data-controller="project-chart" class="flex flex-col flex-1 items-center p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <h2 class="text-xl font-semibold mb-4">Today</h2>
+    <div data-project-chart-target="chartContainer" class="relative overflow-hidden w-64 h-64"></div>
   </div>
-  <div class="col-span-full row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
+  <div class="w-full  p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
     <h2 class="text-xl font-semibold mb-4">Recent activity</h2>
     <div data-controller="time-table" class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="break-words min-w-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-auto w-full">
@@ -42,7 +45,7 @@
       </table>
     </div>
   </div>
-  <div data-controller="daily-chart" class="overflow-x-auto  col-span-full row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
+  <div data-controller="daily-chart" class="w-full col-span-full row-span-4 block p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
     <h2 class="text-xl font-semibold mb-4">Daily data</h2>
     <div data-daily-chart-target="chartContainer" class="w-full h-128">
     </div>

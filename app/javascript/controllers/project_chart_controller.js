@@ -24,7 +24,7 @@ export default class extends Controller {
       },
       series: [
         {
-          name: 'Access From',
+          name: 'Loading',
           type: 'pie',
           radius: ['40%', '70%'],
           avoidLabelOverlap: false,
