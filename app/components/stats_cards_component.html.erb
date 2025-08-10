@@ -1,6 +1,6 @@
 <% @titles.each do |title|%>
-  <div id='stats-card' data-controller="stats-cards-component" class="border border-gray-600 p-4 rounded-md bg-gray-800 w-full">
+  <div id='stats-card' class="border border-gray-600 p-4 rounded-md bg-gray-800 w-full">
     <h2 class="text-lg text-gray-400"><%= title.titleize %></h2>
-    <p class="text-white text-xl" data-stats-cards-target="<%title%>"></p>
+    <p data-stat-name="<%= title %>" data-stats-cards-component-target="statData" class="text-white text-xl" ></p>
   </div>
 <% end %>

@@ -19,10 +19,5 @@ export default class extends Controller {
       bubbles: false
     }))
   }
-  async getFilteredEntries(filterRange) {
-    let response = await fetch(`/api/time_entry/stats?range=${filterRange}`)
-    let data = await response.json()
-    console.log(data)
 
-  }
 }

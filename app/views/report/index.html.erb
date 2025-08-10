@@ -9,10 +9,10 @@
             )
       %>
   </div>
-  <div class="grid grid-rows-2 grid-cols-2 gap-2 w-full ">
+  <div data-controller="stats-cards-component" class="grid grid-rows-2 grid-cols-2 gap-2 w-full ">
     <!-- stats cards -->
     <%= render StatsCardsComponent.new(
-        titles: ["Total hours", "Billable", "Average per day"]
+        titles: ["total_duration", "billable", "average_per_day"]
     )%>
   </div>
   <div class="flex gap-2 flex-1">
