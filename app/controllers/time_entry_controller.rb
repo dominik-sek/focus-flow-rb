@@ -30,8 +30,6 @@ class TimeEntryController < ApplicationController
     render json: daily_hours_entries
   end
 
-
-
   def show
   end
 

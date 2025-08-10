@@ -1,4 +1,8 @@
 class ProjectController < ApplicationController
+  def index
+    @projects = Project.where(user_id: session[:current_user_id])
+  end
+
   def all_users_projects
     @projects = Project.where(user_id: session[:current_user_id])
       render json: @projects, status: :ok

@@ -1,0 +1,62 @@
+<div class="flex flex-col gap-6 w-full">
+  <div class="flex flex-col gap-2">
+    <!--input with filters -->
+    <input type="date" class="w-full rounded-lg bg-gray-800 p-4 text-white" />
+    <div class="flex gap-2 overflow-auto">
+      <!--pill shaped filters -->
+      <div class="rounded-3xl bg-gray-800 px-4 py-1 w-fit text-center hover:bg-gray-400 cursor-pointer">Today</div>
+      <div class="rounded-3xl bg-gray-800 px-4 py-1 w-fit text-center hover:bg-gray-400 cursor-pointer">Week</div>
+      <div class="rounded-3xl bg-gray-800 px-4 py-1 w-fit text-center hover:bg-gray-400 cursor-pointer">Month</div>
+      <div class="rounded-3xl bg-gray-800 px-4 py-1 w-fit text-center hover:bg-gray-400 cursor-pointer">Custom</div>
+    </div>
+  </div>
+  <div class="flex flex-wrap gap-2 w-full ">
+    <!-- stats cards -->
+    <div id='stats-card' class=" border border-gray-600 p-4 rounded-md bg-gray-800 grow">
+      <h2 class="text-lg text-gray-400">Total tracked</h2>
+      <p class="text-white text-xl">142h 15m</p>
+    </div>
+    <div id='stats-card' class=" border border-gray-600 p-4 rounded-md bg-gray-800 grow" >
+      <h2 class="text-lg text-gray-400">Total tracked</h2>
+      <p class="text-white text-xl">142h 15m</p>
+    </div>
+    <div id='stats-card' class=" border border-gray-600 p-4 rounded-md bg-gray-800 grow">
+      <h2 class="text-lg text-gray-400">Total tracked</h2>
+      <p class="text-white text-xl">142h 15m</p>
+    </div>
+    <div id='stats-card' class=" border border-gray-600 p-4 rounded-md bg-gray-800 grow">
+      <h2 class="text-lg text-gray-400">Total tracked</h2>
+      <p class="text-white text-xl">142h 15m</p>
+    </div>
+  </div>
+  <div class="flex gap-2 flex-1">
+    <!-- hours tracked per week -->
+    <div class="flex flex-col flex-1/2">
+      <h2 class="text-lg text-gray-400">Hours tracked</h2>
+      <div>
+        This is a placeholder for the mini bar chart
+      </div>
+    </div>
+    <!-- by project breakdown pie chart percentage -->
+    <div class="flex flex-col flex-1/2">
+      <h2 class="text-lg text-gray-400">Total tracked</h2>
+      <div class="flex flex-col gap-2">
+        <div>
+          This is a placeholder for a pie chart
+        </div>
+        <div class="flex flex-col ">
+          <ul>
+            <li class="flex items-center gap-2"><span class="block rounded-full bg-amber-400 w-2 h-2"></span>legend item 1</li>
+            <li class="flex items-center gap-2"><span class="block rounded-full bg-purple-400 w-2 h-2"></span>legend item 1</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex gap-2 w-full items-center justify-center">
+    <!-- action buttons -->
+    <button class="border border-gray-600 px-6 py-2 rounded-xl bg-gray-800">CSV</button>
+    <button class="border border-gray-600 px-6 py-2 rounded-xl bg-gray-800">XLSX</button>
+    <button class="border border-gray-600 px-6 py-2 rounded-xl bg-gray-800">PDF</button>
+  </div>
+</div>

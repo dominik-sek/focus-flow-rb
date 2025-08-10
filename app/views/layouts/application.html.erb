@@ -23,11 +23,11 @@
     </div>
     <% if user_signed_in? %>
       <%= render 'layouts/header' %>
-      <main class="container mx-auto mt-12 pb-12 px-5 flex flex-col justify-center items-center">
+      <main class="container mt-4 px-4 pb-10 flex flex-col mx-auto justify-center items-center text-gray-900 dark:text-white ">
         <%= yield %>
       </main>
     <% else %>
-      <main class=" mx-auto px-5 flex w-full h-full justify-center items-center">
+      <main class=" mx-auto px-5 flex w-full h-full justify-center items-center text-gray-900 dark:text-white ">
         <%= yield %>
       </main>
     <% end %>
