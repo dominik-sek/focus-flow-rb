@@ -2,32 +2,18 @@
   <div class="flex flex-col gap-2">
     <!--input with filters -->
     <input type="date" class="w-full rounded-lg bg-gray-800 p-4 text-white" />
-    <div class="flex gap-2 overflow-auto">
-      <!--pill shaped filters -->
-      <div class="rounded-3xl bg-gray-800 px-4 py-1 w-fit text-center hover:bg-gray-400 cursor-pointer">Today</div>
-      <div class="rounded-3xl bg-gray-800 px-4 py-1 w-fit text-center hover:bg-gray-400 cursor-pointer">Week</div>
-      <div class="rounded-3xl bg-gray-800 px-4 py-1 w-fit text-center hover:bg-gray-400 cursor-pointer">Month</div>
-      <div class="rounded-3xl bg-gray-800 px-4 py-1 w-fit text-center hover:bg-gray-400 cursor-pointer">Custom</div>
-    </div>
+    <!--pill shaped filters -->
+    <%= render FiltersComponent.new(
+            filters: ["today", "this_week", "this_month"],
+            active_filter: params[:range] || "today"
+            )
+      %>
   </div>
-  <div class="flex flex-wrap gap-2 w-full ">
+  <div class="grid grid-rows-2 grid-cols-2 gap-2 w-full ">
     <!-- stats cards -->
-    <div id='stats-card' class=" border border-gray-600 p-4 rounded-md bg-gray-800 grow">
-      <h2 class="text-lg text-gray-400">Total tracked</h2>
-      <p class="text-white text-xl">142h 15m</p>
-    </div>
-    <div id='stats-card' class=" border border-gray-600 p-4 rounded-md bg-gray-800 grow" >
-      <h2 class="text-lg text-gray-400">Total tracked</h2>
-      <p class="text-white text-xl">142h 15m</p>
-    </div>
-    <div id='stats-card' class=" border border-gray-600 p-4 rounded-md bg-gray-800 grow">
-      <h2 class="text-lg text-gray-400">Total tracked</h2>
-      <p class="text-white text-xl">142h 15m</p>
-    </div>
-    <div id='stats-card' class=" border border-gray-600 p-4 rounded-md bg-gray-800 grow">
-      <h2 class="text-lg text-gray-400">Total tracked</h2>
-      <p class="text-white text-xl">142h 15m</p>
-    </div>
+    <%= render StatsCardsComponent.new(
+        titles: ["Total hours", "Billable", "Average per day"]
+    )%>
   </div>
   <div class="flex gap-2 flex-1">
     <!-- hours tracked per week -->

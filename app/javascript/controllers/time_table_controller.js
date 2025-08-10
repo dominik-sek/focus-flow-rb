@@ -19,7 +19,7 @@ export default class extends Controller {
     this.showLoader()
 
     try {
-      const response = await fetch("/api/time_entry/current_month?limit=5")
+      const response = await fetch("/api/time_entry/this_month?limit=5")
       const json = await response.json()
       const entries = json.data || json
       console.log(entries)
