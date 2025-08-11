@@ -19,7 +19,7 @@ export default class extends Controller {
       console.error("Error fetching filtered entries:", error);
     })
   }
-
+                                                                                                                                                                                                                                    
     async getFilteredEntries(filterRange) {
     let response = await fetch(`/api/time_entry/stats?range=${filterRange}`)
     let data = await response.json()

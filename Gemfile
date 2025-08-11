@@ -43,6 +43,8 @@ gem "thruster", require: false
 gem "dotenv-rails"
 
 gem "view_component"
+gem "caxlsx"
+gem "caxlsx_rails"
 
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]

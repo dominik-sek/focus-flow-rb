@@ -1,4 +1,6 @@
 class TimeEntryController < ApplicationController
+    before_action :authenticate_user!
+
   def stats
     range = params[:range]
     from_range = params[:date_from]

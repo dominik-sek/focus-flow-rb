@@ -1,4 +1,6 @@
 class ProjectController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @projects = Project.where(user_id: session[:current_user_id])
   end
