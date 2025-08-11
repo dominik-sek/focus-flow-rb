@@ -4,12 +4,8 @@ class ReportController < ApplicationController
   def index
   end
 
-  def generate
+  def generate_report
   end
 
   private
-
-  def generate_report_params
-    params.require().permit()
-  end
 end

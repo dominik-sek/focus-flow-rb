@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   get "logout", to: "sessions#destroy", as: :logout
   get "/projects", to: "project#index", as: :projects
   get "/reports", to: "report#index", as: :reports
+  get "/reports/generate", to: "report#generate_report", as: :generate_report
 
   scope "/api" do
     get "time_entry/stats", to: "time_entry#stats"

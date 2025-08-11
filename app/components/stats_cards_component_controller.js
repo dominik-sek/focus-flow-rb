@@ -9,7 +9,6 @@ export default class extends Controller {
     window.addEventListener("reportFilter:change", this.refreshData.bind(this))
   }
   refreshData(event) {
-     // todo: actually add rendering inside js to show loading state
     this.filterValue = event.detail.filter;
      this.getFilteredEntries(this.filterValue).then((data) => {
       this.statDataTargets.forEach((el) => {
@@ -19,7 +18,7 @@ export default class extends Controller {
       console.error("Error fetching filtered entries:", error);
     })
   }
-                                                                                                                                                                                                                                    
+
     async getFilteredEntries(filterRange) {
     let response = await fetch(`/api/time_entry/stats?range=${filterRange}`)
     let data = await response.json()

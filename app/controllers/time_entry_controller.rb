@@ -1,10 +1,11 @@
 class TimeEntryController < ApplicationController
-    before_action :authenticate_user!
+  before_action :authenticate_user!
 
   def stats
     range = params[:range]
     from_range = params[:date_from]
     to_range = params[:date_to]
+    puts(params.inspect())
     from, to = parse_range(range, from_range, to_range)
     entries = TimeEntry
         .where(user_id: session[:current_user_id])
