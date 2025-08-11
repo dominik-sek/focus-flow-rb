@@ -9,6 +9,7 @@ export default class extends Controller {
     window.addEventListener("reportFilter:change", this.refreshData.bind(this))
   }
   refreshData(event) {
+    console.log("refreshing data for:", event.detail.filter)
     this.filterValue = event.detail.filter;
      this.getFilteredEntries(this.filterValue).then((data) => {
       this.statDataTargets.forEach((el) => {

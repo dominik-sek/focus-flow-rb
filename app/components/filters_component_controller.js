@@ -4,45 +4,53 @@ export default class extends Controller {
   static targets = ["filterButton"]
   fromDate = null
   toDate = null
-  connect() {
 
+  connect() {
+    console.log('filter component connected')
+    this.setActiveByName("today")
+    this.emitRange("today")
   }
+
   setFromDate(event) {
-    event.target.valueAsDate = new Date(event.target.value);
     this.fromDate = event.target.value
-    this.toDate = new Date().toISOString().split('T')[0];
-    window.dispatchEvent(new CustomEvent("reportFilter:change", {
-      detail: {
-        filter: `custom&date_from=${this.fromDate}&date_to=${this.toDate}`
-      },
-      bubbles: false
-    }))
+    this.toDate   = new Date().toISOString().split("T")[0]
+    this.emitRange(`custom&date_from=${this.fromDate}&date_to=${this.toDate}`)
   }
+
   setToDate(event) {
     this.toDate = event.target.value
-    if (!this.fromDate) {
-      this.fromDate = new Date().toISOString().split('T')[0];
-    }
+    if (!this.fromDate) this.fromDate = new Date().toISOString().split("T")[0]
+    this.emitRange(`custom&date_from=${this.fromDate}&date_to=${this.toDate}`)
+  }
+
+  changeFilter(event) {
+    const btn = event.currentTarget || event.target.closest("button")
+    if (!btn) return
+    const range = btn.dataset.filter
+    this.setActive(btn)
+    this.emitRange(range)
+  }
+
+  setActiveByName(name) {
+    const btn = this.filterButtonTargets.find(el => el.dataset.filter === name)
+    if (btn) this.setActive(btn)
+  }
+
+  emitRange(range) {
+
     window.dispatchEvent(new CustomEvent("reportFilter:change", {
-      detail: {
-        filter: `custom&date_from=${this.fromDate}&date_to=${this.toDate}`
-      },
+      detail: { filter: range },
       bubbles: false
     }))
   }
-  changeFilter(event) {
-    const range = event.target.dataset.filter
-    this.filterButtonTargets.forEach((el) => {
-      el.dataset.active = false;
+
+   setActive(buttonEl) {
+    this.filterButtonTargets.forEach(el => {
+      el.dataset.active = "false"
+      el.setAttribute("aria-pressed", "false")
     })
-    
-    event.target.dataset.active = true;
-    window.dispatchEvent(new CustomEvent("reportFilter:change", {
-      detail: {
-        filter: range
-      },
-      bubbles: false
-    }))
+    buttonEl.dataset.active = "true"
+    buttonEl.setAttribute("aria-pressed", "true")
   }
 
 }
