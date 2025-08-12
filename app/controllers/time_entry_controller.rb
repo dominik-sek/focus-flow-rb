@@ -10,7 +10,8 @@ class TimeEntryController < ApplicationController
     entries = TimeEntry
         .where(user_id: session[:current_user_id])
         .where(started_at: from..to)
-        .select(:id, :name, :duration, :started_at, :project_id)
+        .select(:id, :name, :duration, :started_at, :finished_at, :project_id)
+        .order(started_at: :desc)
 
     render json: {
       range: { from: from, to: to },
@@ -18,7 +19,7 @@ class TimeEntryController < ApplicationController
       billable: entries.sum(:duration),
       average_per_day: entries.sum(:duration),
       entries: entries
-    }
+    }, include: :project
   end
 
 

@@ -177,7 +177,7 @@ export default class extends Controller {
   }
   
   taskNameChanged(){
-    const saved = JSON.parse(localStorage.getItem('activeTimer'))
+    const saved = JSON.parse(localStorage.getItem('activeTimer') || JSON.stringify({}) )
     saved.taskName = this.taskNameTarget.value
     localStorage.setItem("activeTimer", JSON.stringify(saved))
   }

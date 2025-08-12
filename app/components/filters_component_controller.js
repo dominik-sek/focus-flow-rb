@@ -12,14 +12,22 @@ export default class extends Controller {
 
   setFromDate(event) {
     this.fromDate = event.target.value
-    this.toDate   = new Date().toISOString().split("T")[0]
+    this.toDate = new Date().toISOString().split("T")[0]
+    
+
     this.emitRange(`custom&date_from=${this.fromDate}&date_to=${this.toDate}`)
+    const params = new URLSearchParams({ range });
+    const url = `${location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", url);
   }
 
   setToDate(event) {
     this.toDate = event.target.value
     if (!this.fromDate) this.fromDate = new Date().toISOString().split("T")[0]
     this.emitRange(`custom&date_from=${this.fromDate}&date_to=${this.toDate}`)
+        const params = new URLSearchParams({ range });
+    const url = `${location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", url);
   }
 
   changeFilter(event) {
@@ -28,6 +36,9 @@ export default class extends Controller {
     const range = btn.dataset.filter
     this.setActive(btn)
     this.emitRange(range)
+    const params = new URLSearchParams({ range });
+    const url = `${location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", url);
   }
 
   setActiveByName(name) {

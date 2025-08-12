@@ -19,10 +19,9 @@ export default class extends Controller {
     this.showLoader()
 
     try {
-      const response = await fetch("/api/time_entry/this_month?limit=5")
+      const response = await fetch("/api/time_entry/stats?range=this_month")
       const json = await response.json()
-      const entries = json.data || json
-      console.log(entries)
+      const entries = json.entries || json
 
       this.tbodyTarget.innerHTML = entries.map(entry => this.buildRow(entry)).join("")
       if (entries.length === 0) {
