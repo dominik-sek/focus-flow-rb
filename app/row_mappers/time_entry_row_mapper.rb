@@ -4,8 +4,8 @@
         {
           date: e[:date],
           day: e[:date].strftime("%A"),
-          start: e[:date],
-          finish: e[:date],
+          start: e[:day_start].strftime("%H:%M"),
+          finish: e[:day_end].strftime("%H:%M"),
           duration: duration_to_hours(e[:total_duration]),
           duration_decimal: e[:total_duration]
         }

@@ -14,13 +14,27 @@ class TimeEntryService
     }
 
     if group_by == :day
-      grouped_rows = TimeEntry
-              .where(user_id: user, started_at: from..to)
-              .group(Arel.sql("DATE(started_at)"))
-              .order(Arel.sql("DATE(started_at)"))
-              .pluck(Arel.sql("DATE(started_at)"), Arel.sql("SUM(duration)"))
+      agg_rows = TimeEntry
+        .where(user_id: user, started_at: from..to)
+        .select(
+          "DATE(started_at) AS day",
+          "SUM(duration) AS total_duration",
+          "MIN(started_at) AS day_start",
+          "MAX(finished_at) AS day_end"
+        ).group("DATE(started_at)")
+        .order("day")
+      entries_by_day = entries.group_by { |e| e.started_at.to_date }
 
-      result[:grouped_by_day] = grouped_rows.map { |date, total| { date: date, total_duration: total } }
+      result[:grouped_by_day] = agg_rows.map do |row|
+  day = row.read_attribute("day") # Date
+  {
+    date: day,
+    total_duration: row.read_attribute("total_duration"),
+    day_start: row.read_attribute("day_start"),   # earliest started_at that day
+    day_end: row.read_attribute("day_end"),       # latest finished_at that day
+    entries: entries_by_day[day] || []            # raw records with HH:MM preserved
+  }
+end
     end
 
     result
