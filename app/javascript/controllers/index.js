@@ -16,6 +16,9 @@ application.register("project-chart", ProjectChartController)
 import ProjectSelectController from "./project_select_controller"
 application.register("project-select", ProjectSelectController)
 
+import ReportTableController from "./report_table_controller"
+application.register("report-table", ReportTableController)
+
 import TimeTableController from "./time_table_controller"
 application.register("time-table", TimeTableController)
 
@@ -28,8 +31,8 @@ application.register("toast-message", ToastMessageController)
 import UserMenuController from "./user_menu_controller"
 application.register("user-menu", UserMenuController)
 
-import FiltersComponentController from '../../components/filters_component_controller'
-application.register("filters-component", FiltersComponentController)
+import stats_cards_component_controller from '../../components/stats_cards_component_controller'
+application.register("stats-cards-component", stats_cards_component_controller)
 
-import StatsCardsController from '../../components/stats_cards_component_controller'
-application.register("stats-cards-component", StatsCardsController)
+import filters_component_controller from '../../components/filters_component_controller'
+application.register("filters-component", filters_component_controller)

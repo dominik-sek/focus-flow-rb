@@ -6,7 +6,6 @@ export default class extends Controller {
   toDate = null
 
   connect() {
-    console.log('filter component connected')
     this.setActiveByName("today")
     this.emitRange("today")
   }

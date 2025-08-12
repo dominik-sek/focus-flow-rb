@@ -5,13 +5,12 @@ export default class extends Controller {
   static targets = ["statData"]
   filterValue = ""
   connect() {
-    
     window.addEventListener("reportFilter:change", this.refreshData.bind(this))
   }
   refreshData(event) {
-    console.log("refreshing data for:", event.detail.filter)
     this.filterValue = event.detail.filter;
-     this.getFilteredEntries(this.filterValue).then((data) => {
+    this.getFilteredEntries(this.filterValue).then((data) => {
+      console.log(data.entries)
       this.statDataTargets.forEach((el) => {
           el.textContent = formatDuration(data[el.dataset.statName])
       })
@@ -20,7 +19,7 @@ export default class extends Controller {
     })
   }
 
-    async getFilteredEntries(filterRange) {
+  async getFilteredEntries(filterRange) {
     let response = await fetch(`/api/time_entry/stats?range=${filterRange}`)
     let data = await response.json()
     return data;
