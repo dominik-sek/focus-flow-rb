@@ -7,7 +7,7 @@ class ProjectController < ApplicationController
 
   def all_users_projects
     @projects = Project.where(user_id: session[:current_user_id])
-      render json: @projects, status: :ok
+    render json: @projects, status: :ok
   end
 
   def hours_per_project
@@ -47,7 +47,7 @@ class ProjectController < ApplicationController
   end
 
   private
-  def project_params
-    params.require(:project).permit(:name)
-  end
+    def project_params
+      params.require(:project).permit(:name)
+    end
 end

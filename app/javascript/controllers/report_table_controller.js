@@ -7,7 +7,7 @@ import {
 // Connects to data-controller="report-table"
 export default class extends Controller {
   static targets = ["table", "grid"]
-  filterRange = null
+  filterRange = "today"
   gridApi = null
   gridOptions = {
     theme: themeQuartz,
@@ -19,8 +19,9 @@ export default class extends Controller {
     ]
 }
   connect() {
+    
+    this.getEntriesFromQuery()
     window.addEventListener("reportFilter:change", this.refreshTable.bind(this))
-    console.log('ReportTableController connected');
     this.gridApi = createGrid(
         document.querySelector('#tableGrid'),
         this.gridOptions,
@@ -29,12 +30,12 @@ export default class extends Controller {
 
   refreshTable(event) {
     const filter = event.detail.filter
-    console.log("Refreshing table with filter:", filter)
-    this.getFilteredEntries(filter)
+    this.getEntriesFromQuery(filter)
   }
-  async getFilteredEntries(filterRange) {
-    await fetch(`/api/time_entry/stats?range=${filterRange}`)
-      .then(response => response.json())
-      .then((data) => this.gridApi.setGridOption('rowData', data.entries))
+  async getEntriesFromQuery() {
+    const qs = new URLSearchParams(window.location.search).toString()
+    const resp = await fetch(`/api/time_entry/stats?${qs}`)
+    const data = await resp.json()
+    this.gridApi.setGridOption('rowData', data.entries)
   }
 }

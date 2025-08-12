@@ -5,16 +5,12 @@ class ReportService
     @wb = @package.workbook
   end
 
-  def call(format:)
+  def call(format:, rows:)
     @wb.add_worksheet(name: "Report") do |sheet|
-      (1..7).each do
-        sheet.add_row (1..8).to_a
+      sheet.add_row [ "Data", "Dzień", "Start", "Koniec", "Łącznie godzin", "Łącznie (decymalnie)" ]
+      rows.each do |row|
+        sheet.add_row [ row[:date], row[:day], row[:start], row[:finish], row[:duration], row[:duration_decimal] ]
       end
-
-
-
-      sheet.merge_cells("A1:H1")
-      sheet.merge_cells("A1:A7")
     end
 
     @package  # return the package to the caller
