@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="user-menu"
 export default class extends Controller {
   static targets = ["dropdownMenu"]
+  declare readonly dropdownMenuTarget: HTMLButtonElement
   isOpen = false
   connect() {
     this.checkIfOutsideClick = this.checkIfOutsideClick.bind(this)

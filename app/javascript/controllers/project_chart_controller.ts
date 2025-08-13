@@ -14,38 +14,38 @@ export default class extends Controller {
 
   connect() {
     window.addEventListener("time-entry:submitted", this.refresh.bind(this))
-    this.option = {
-      tooltip: {
-        trigger: 'item'
-      },
-      legend: {
-        top: '5%',
-        left: 'center'
-      },
-      series: [
-        {
-          name: 'Loading',
-          type: 'pie',
-          radius: ['40%', '70%'],
-          avoidLabelOverlap: false,
-          label: {
-            show: false,
-            position: 'center'
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: 26,
-              fontWeight: 'bold'
-            }
-          },
-          labelLine: {
-            show: false
-          },
-        }
-      ]
-    };
-    this.chart.setOption(this.option)
+    // this.option = {
+    //   tooltip: {
+    //     trigger: 'item'
+    //   },
+    //   legend: {
+    //     top: '5%',
+    //     left: 'center'
+    //   },
+    //   series: [
+    //     {
+    //       name: 'Loading',
+    //       type: 'pie',
+    //       radius: ['40%', '70%'],
+    //       avoidLabelOverlap: false,
+    //       label: {
+    //         show: false,
+    //         position: 'center'
+    //       },
+    //       emphasis: {
+    //         label: {
+    //           show: true,
+    //           fontSize: 26,
+    //           fontWeight: 'bold'
+    //         }
+    //       },
+    //       labelLine: {
+    //         show: false
+    //       },
+    //     }
+    //   ]
+    // };
+    //this.chart.setOption(this.option)
     this.refresh()
   }
 
@@ -55,6 +55,11 @@ export default class extends Controller {
 
     await fetch('api/projects/summary').then(async (res) => {
       const json = await res.json()
+      if (!json || json.length === 0) {
+        this.chartContainerTarget.innerHTML = `<p>No data yet</p>`
+        return;
+      }
+
       this.option.series[0].data = json.map((item) => ({
         value: item.duration,
         name: item.name
