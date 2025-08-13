@@ -1,39 +1,42 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="user-menu"
 export default class extends Controller {
-  static targets = ["dropdownMenu"]
-  declare readonly dropdownMenuTarget: HTMLButtonElement
-  isOpen = false
+  static targets = ["dropdownMenu"];
+  declare readonly dropdownMenuTarget: HTMLButtonElement;
+  isOpen = false;
   connect() {
-    this.checkIfOutsideClick = this.checkIfOutsideClick.bind(this)
-    console.log("UserMenuController connected")
+    this.checkIfOutsideClick = this.checkIfOutsideClick.bind(this);
+    console.log("UserMenuController connected");
   }
 
   disconnect() {
-    document.removeEventListener("click", this.handleOutsideClick)
+    document.removeEventListener("click", this.handleOutsideClick);
 
   }
 
   toggle() {
-    event.stopPropagation()
+    event.stopPropagation();
 
-    this.isOpen = !this.isOpen
+    this.isOpen = !this.isOpen;
     if (this.isOpen) {
-      document.addEventListener("click", this.checkIfOutsideClick)
-      this.dropdownMenuTarget.classList.remove("hidden")
+      document.addEventListener("click", this.checkIfOutsideClick);
+      this.dropdownMenuTarget.classList.add("visible");
     } else {
-      this.close()
+      this.close();
     }
   }
   close() {
-    this.isOpen = false
-    this.dropdownMenuTarget.classList.add("hidden")
-    document.removeEventListener("click", this.checkIfOutsideClick)
+    this.isOpen = false;
+    this.dropdownMenuTarget.classList.remove("visible");
+
+    this.dropdownMenuTarget.classList.add("invisible");
+
+    document.removeEventListener("click", this.checkIfOutsideClick);
   }
   checkIfOutsideClick(e) {
     if (!this.element.contains(e.target)) {
-      this.close()
+      this.close();
     }
   }
 

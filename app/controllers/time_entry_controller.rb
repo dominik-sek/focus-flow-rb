@@ -12,7 +12,7 @@ class TimeEntryController < ApplicationController
   end
 
   def create
-    @time_entry = TimeEntryService.new_time_entry(time_entry_params)
+    @time_entry = TimeEntryService.new_time_entry(attrs: time_entry_params, user: session[:current_user_id])
     if @time_entry.save
       render json: @time_entry, status: :created
     else

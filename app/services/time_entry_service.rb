@@ -40,9 +40,9 @@ end
     result
   end
 
-  def self.new_time_entry(attrs)
+  def self.new_time_entry(attrs:, user:)
     attrs[:name] = "No task name" if attrs[:name].blank?
-    attrs[:user_id] = session[:current_user_id]
+    attrs[:user_id] = user
     attrs[:project_id].to_i
 
     @time_entry = TimeEntry.create(attrs)

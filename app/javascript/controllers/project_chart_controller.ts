@@ -1,77 +1,84 @@
 import { Controller } from "@hotwired/stimulus"
 import * as echarts from 'echarts';
 import { formatDuration } from "../helpers/formatDuration";
+type EChartsOption = echarts.EChartsOption;
 
 // Connects to data-controller="project-chart"
 export default class extends Controller {
-  static targets = ["chartContainer"]
-  chart = echarts.init(this.chartContainerTarget)
-  option = {}
+  static targets = ["chartContainer"];
+  declare readonly chartContainerTarget: HTMLDivElement;
+  chart!: echarts.ECharts;
+  option?: EChartsOption;
 
-  refresh() {
-    this.getProjectHours()
+  async refresh() {
+    this.chart.showLoading('default')
+    await this.getProjectHours();
   }
 
   connect() {
-    window.addEventListener("time-entry:submitted", this.refresh.bind(this))
-    // this.option = {
-    //   tooltip: {
-    //     trigger: 'item'
-    //   },
-    //   legend: {
-    //     top: '5%',
-    //     left: 'center'
-    //   },
-    //   series: [
-    //     {
-    //       name: 'Loading',
-    //       type: 'pie',
-    //       radius: ['40%', '70%'],
-    //       avoidLabelOverlap: false,
-    //       label: {
-    //         show: false,
-    //         position: 'center'
-    //       },
-    //       emphasis: {
-    //         label: {
-    //           show: true,
-    //           fontSize: 26,
-    //           fontWeight: 'bold'
-    //         }
-    //       },
-    //       labelLine: {
-    //         show: false
-    //       },
-    //     }
-    //   ]
-    // };
-    //this.chart.setOption(this.option)
-    this.refresh()
+    this.chart = echarts.init(this.chartContainerTarget);
+    window.addEventListener("time-entry:submitted", this.refresh.bind(this));
+    this.refresh();
+  }
+  disconnect(): void {
+    window.removeEventListener("time-entry:submitted", this.refresh);
+
   }
 
 
 
-  async getProjectHours() {
+  showLoader() {
+    this.chartContainerTarget.innerHTML =
+      `
+      
+      `;
+  }
 
-    await fetch('api/projects/summary').then(async (res) => {
-      const json = await res.json()
+  async getProjectHours() {
+    try {
+      const res = await fetch('api/projects/summary');
+      const json = await res.json();
       if (!json || json.length === 0) {
-        this.chartContainerTarget.innerHTML = `<p>No data yet</p>`
+        this.chart.hideLoading();
+        this.chart.clear();
         return;
       }
+      const data = json.map((item: unknown) => ({ value: item.duration, name: item.name }));
+      const legend = json.map((item: unknown) => item.name);
+      const formatter = (params: unknown) => { return `${params.name}: ${formatDuration(params.value)} hours`; };
+      const option: EChartsOption = {
+        tooltip: {
+          trigger: 'item',
+          formatter: formatter
+        },
+        legend: {
+          type: 'scroll',
+          data: legend
+        },
+        series: [
+          {
+            name: "Project hours",
+            type: 'pie',
+            radius: '60%',
+            data: data
+          }
 
-      this.option.series[0].data = json.map((item) => ({
-        value: item.duration,
-        name: item.name
-      }))
-      this.option.series[0].name = "Project Hours"
-      this.option.legend.data = json.map((item) => item.name)
-      this.option.tooltip.formatter = (params) => {
-        return `${params.name}: ${formatDuration(params.value)} hours`
-      }
-
-      this.chart.setOption(this.option)
-    })
+        ]
+      };
+      this.option = option
+      this.chart.hideLoading()
+      this.chart.setOption(option, { notMerge: true })
+      this.chart.resize()
+    } catch (e) {
+      this.chart.hideLoading()
+      this.chart.clear()
+            this.chartContainerTarget.insertAdjacentHTML(
+        "beforeend",
+        `<p class="mt-2 text-sm text-red-600">Failed to load data</p>`
+            )
+      console.error(e)
+    }
 
   }
 }
+
