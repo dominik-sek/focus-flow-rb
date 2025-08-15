@@ -1,10 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
+type ProjectPayload = { project_id: string | number; project_name: string }
+
 export default class extends Controller {
-  static targets = ["timerDisplay", "taskName", "toggleButton"]
+  static targets = ["timerDisplay", "taskName", "toggleButton",]
   declare readonly timerDisplayTarget: HTMLElement
   declare readonly taskNameTarget: HTMLInputElement
   declare readonly toggleButtonTarget: HTMLButtonElement
+  
   private timerInterval?: ReturnType<typeof window.setInterval>
   hours = 0
   minutes = 0
@@ -14,7 +17,7 @@ export default class extends Controller {
   started_at = 0
   finished_at = 0
   duration = 0
-  selectedProject = null;
+  selectedProject?: ProjectPayload;
 
   reset() {
     this.hours = 0
@@ -35,12 +38,15 @@ export default class extends Controller {
     this.toggleButtonTarget.textContent = "Start"
   }
 
+
+  private onProjectSelectedBound = (e: Event) => this.projectSelectedChanged(e as CustomEvent<ProjectPayload>)
+
   connect() {
     this.reset()
-    this.projectSelectedChanged()
+    window.addEventListener("project:selected",this.onProjectSelectedBound)
+    
 
     const saved = localStorage.getItem('activeTimer')
-    console.log(saved)
     if (saved) {
       const { isActive, startedAt, taskName, projectName } = JSON.parse(saved)
       if (isActive) {
@@ -70,7 +76,9 @@ export default class extends Controller {
       }
     }
   }
-
+  disconnect(): void {
+    window.removeEventListener("project:selected", this.onProjectSelectedBound)
+  }
   toggle() {
     if (this.isRunning) {
       this.stop();
@@ -140,7 +148,7 @@ export default class extends Controller {
       started_at: started_at,
       finished_at: finished_at,
       duration: duration,
-      project_id: this.selectedProject?.id //nullable
+      project_id: this.selectedProject?.project_id //nullable
     }
     console.log(data)
 
@@ -184,18 +192,13 @@ export default class extends Controller {
     saved.taskName = this.taskNameTarget.value
     localStorage.setItem("activeTimer", JSON.stringify(saved))
   }
-  projectSelectedChanged(){
 
-      window.addEventListener("project:selected", (event) => {
-        this.selectedProject = event.detail;
-        console.log(event.detail)
-        const saved = JSON.parse(localStorage.getItem('activeTimer')) 
-        saved.projectName = event.detail;
-
-
-        localStorage.setItem("activeTimer", JSON.stringify(saved))
-
-    });
+  projectSelectedChanged(e: CustomEvent<ProjectPayload>){
+      const {project_id, project_name} = e.detail
+      const saved = JSON.parse(localStorage.getItem('activeTimer') || JSON.stringify({})) 
+      this.selectedProject = e.detail
+      saved.projectName = e.detail
+      localStorage.setItem("activeTimer", JSON.stringify(saved))
   }
 
 }

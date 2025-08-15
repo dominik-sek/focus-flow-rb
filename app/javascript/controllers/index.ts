@@ -11,9 +11,6 @@ application.register("modal", ModalController)
 import ProjectChartController from "./project_chart_controller"
 application.register("project-chart", ProjectChartController)
 
-import ProjectSelectController from "./project_select_controller"
-application.register("project-select", ProjectSelectController)
-
 import ReportTableController from "./report_table_controller"
 application.register("report-table", ReportTableController)
 
@@ -28,6 +25,9 @@ application.register("toast-message", ToastMessageController)
 
 import UserMenuController from "./user_menu_controller"
 application.register("user-menu", UserMenuController)
+
+import ProjectSearchbarController from './project_searchbar_controller'
+application.register("project-searchbar", ProjectSearchbarController)
 
 import filters_component_controller from '../../components/filters_component_controller'
 application.register("filters-component", filters_component_controller)

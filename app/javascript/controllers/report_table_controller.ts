@@ -5,6 +5,7 @@ import {
   GridApi,
 } from "ag-grid-community";
 import dayjs from "dayjs";
+import { formatDuration } from "../helpers/formatDuration";
 
 // Connects to data-controller="report-table"
 export default class extends Controller {
@@ -51,6 +52,7 @@ export default class extends Controller {
 
     let dataEntriesDateFormatted = data.entries.map((entry)=>({
       ...entry,
+      duration: formatDuration(entry.duration),
       started_at: dayjs(entry.started_at).format('YYYY/MM/DD, HH:mm:ss')
     }))
     console.log(dataEntriesDateFormatted)
