@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import dayjs from "dayjs";
+import dayjs, { OpUnitType } from "dayjs";
 export default class extends Controller {
   static targets = ["filterButton", "fromDateInput", "toDateInput", "exportLink"];
   declare readonly filterButtonTarget: HTMLButtonElement
@@ -12,78 +12,69 @@ export default class extends Controller {
   fromDate = "";
   toDate = "";
 
-  updateExportLink(){
-    const pageUrl = new URL(window.location.href)
-    const exportUrl = new URL(this.exportLinkTarget.href, window.location.origin)
-    exportUrl.search = pageUrl.search
-    this.exportLinkTarget.href = exportUrl.toString()
-  }
   connect() {
     const url = new URL(window.location.href);
-    const hasAny =
-      url.searchParams.get("date_from") || url.searchParams.get("date_to");
-    if (!hasAny) {
-      url.searchParams.set("date_from", dayjs().startOf("day").format(this.DATE_FORMAT_API));
-      url.searchParams.set("date_to", dayjs().endOf("day").format(this.DATE_FORMAT_API));
-
-      window.history.replaceState({}, "", url);
-    }
+    this.setUrlToMatchRange(false,"day")
     this.setActiveByName(url.searchParams.get("range") || "today");
-    this.emitRange(url.searchParams.get("range") || "today");
+    this.emitRange(url.searchParams.get("range") || "today")
     this.fromDateInputTarget.value = dayjs().startOf("day").format('YYYY-MM-DD')
     this.toDateInputTarget.value = dayjs().endOf("day").format('YYYY-MM-DD')
   }
 
-  setFromDate(event:Event & { target: HTMLInputElement}) {
+  setFromDate(event: Event & { target: HTMLInputElement }) {
     this.fromDate = event.target.value;
     if (!this.toDate) this.toDate = new Date().toISOString().split("T")[0];
-    this.writeCustomRange();
+    this.setUrlToMatchRange(true)
   }
 
-  setToDate(event:Event & { target: HTMLInputElement}) {
+  setToDate(event: Event & { target: HTMLInputElement }) {
     this.toDate = event.target.value;
     if (!this.fromDate) this.fromDate = new Date().toISOString().split("T")[0];
-    this.writeCustomRange();
-  }
-  rangeToUrlMapper(){
-
+    this.setUrlToMatchRange(true)
   }
 
   parseRangeToDate(range: string) {
-    const url = new URL(window.location.href);
     switch (range) {
       case "today":
-        url.searchParams.set("date_from", dayjs().startOf("day").format('YYYY-MM-DD HH:mm:ss'));
-        url.searchParams.set("date_to", dayjs().endOf("day").format('YYYY-MM-DD HH:mm:ss'));
-        this.fromDateInputTarget.value = dayjs().startOf("day").format('YYYY-MM-DD')
-        this.toDateInputTarget.value = dayjs().endOf("day").format('YYYY-MM-DD')
-        window.history.replaceState({}, "", url);
-        this.updateExportLink()
-
+        this.setUrlToMatchRange(false,"day")
         break;
       case "this_week":
-        url.searchParams.set("date_from", dayjs().startOf("week").format('YYYY-MM-DD HH:mm:ss'));
-        url.searchParams.set("date_to", dayjs().endOf("week").format('YYYY-MM-DD HH:mm:ss'));
-        this.fromDateInputTarget.value = dayjs().startOf("week").format('YYYY-MM-DD')
-        this.toDateInputTarget.value = dayjs().endOf("week").format('YYYY-MM-DD')
-        window.history.replaceState({}, "", url);
-        this.updateExportLink()
-
+        this.setUrlToMatchRange(false,"week")
         break;
       case "this_month":
-        url.searchParams.set("date_from", dayjs().startOf("month").format('YYYY-MM-DD HH:mm:ss'));
-        url.searchParams.set("date_to", dayjs().endOf("month").format('YYYY-MM-DD HH:mm:ss'));
-        this.fromDateInputTarget.value = dayjs().startOf("month").format('YYYY-MM-DD')
-        this.toDateInputTarget.value = dayjs().endOf("month").format('YYYY-MM-DD')
-        window.history.replaceState({}, "", url);
-        this.updateExportLink()
-
+        this.setUrlToMatchRange(false,"month")
         break;
       default:
         console.error("wtf?");
     }
   }
-  changeFilter(event: Event & {target: HTMLButtonElement}) {
+  setUrlToMatchRange(isCustom: boolean, range?: OpUnitType) {
+
+    if (isCustom) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("date_from", this.fromDate);
+      url.searchParams.set("date_to", this.toDate);
+      window.history.replaceState({}, "", url);
+      this.emitRange("custom");
+      this.updateExportLink()
+      return;
+    }
+
+    if (!range) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("date_from", dayjs().startOf(range).format(this.DATE_FORMAT_API));
+    url.searchParams.set("date_to", dayjs().endOf(range).format(this.DATE_FORMAT_API));
+    this.fromDateInputTarget.value = dayjs().startOf(range).format(this.DATE_FORMAT_INPUT)
+    this.toDateInputTarget.value = dayjs().endOf(range).format(this.DATE_FORMAT_INPUT)
+    window.history.replaceState({}, "", url);
+
+
+    this.updateExportLink()
+  }
+
+ 
+
+  changeFilter(event: Event & { target: HTMLButtonElement }) {
     const btn = event.currentTarget || event.target.closest("button");
     if (!btn) return;
     const range = btn.dataset.filter;
@@ -103,15 +94,6 @@ export default class extends Controller {
     }
   }
 
-  writeCustomRange() {
-    const url = new URL(window.location.href);
-    url.searchParams.set("date_from", this.fromDate);
-    url.searchParams.set("date_to", this.toDate);
-    window.history.replaceState({}, "", url);
-    this.emitRange("custom");
-    this.updateExportLink()
-  }
-
   emitRange(range) {
     window.dispatchEvent(
       new CustomEvent("reportFilter:change", {
@@ -128,5 +110,12 @@ export default class extends Controller {
     });
     buttonEl.dataset.active = "true";
     buttonEl.setAttribute("aria-pressed", "true");
+  }
+
+  updateExportLink() {
+    const pageUrl = new URL(window.location.href)
+    const exportUrl = new URL(this.exportLinkTarget.href, window.location.origin)
+    exportUrl.search = pageUrl.search
+    this.exportLinkTarget.href = exportUrl.toString()
   }
 }

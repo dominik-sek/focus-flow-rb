@@ -18,21 +18,23 @@ export default class extends Controller {
         { field: "duration" },
         { field: "started_at" },
     ]
-}
+  }
+
   connect() {
     
     this.getEntriesFromQuery()
     window.addEventListener("reportFilter:change", this.refreshTable.bind(this))
     this.gridApi = createGrid(
-        document.querySelector('#tableGrid'),
+        document.querySelector('#tableGrid')!,
         this.gridOptions,
       );
   }
 
-  refreshTable(event) {
+  refreshTable(event: CustomEvent<Event & {filter: {}}>) {
     const filter = event.detail.filter
-    this.getEntriesFromQuery(filter)
+    this.getEntriesFromQuery()
   }
+
   async getEntriesFromQuery() {
     const qs = new URLSearchParams(window.location.search).toString()
     const resp = await fetch(`/api/time_entry/stats?${qs}`)
