@@ -30,9 +30,9 @@ class TimeEntryService
   {
     date: day,
     total_duration: row.read_attribute("total_duration"),
-    day_start: row.read_attribute("day_start"),   # earliest started_at that day
-    day_end: row.read_attribute("day_end"),       # latest finished_at that day
-    entries: entries_by_day[day] || []            # raw records with HH:MM preserved
+    day_start: row.read_attribute("day_start"),
+    day_end: row.read_attribute("day_end"),
+    entries: entries_by_day[day] || []
   }
 end
     end

@@ -9,7 +9,7 @@ import {
 export default class extends Controller {
   static targets = ["table", "grid"]
   filterRange = "today"
-  gridApi:GridApi //add support for backend types
+  gridApi!: GridApi //add support for backend types
   gridOptions = {
     theme: themeQuartz,
     rowData: [],

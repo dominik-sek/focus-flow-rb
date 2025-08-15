@@ -13,6 +13,6 @@ class ReportService
       end
     end
 
-    @package  # return the package to the caller
+    @package
   end
 end
