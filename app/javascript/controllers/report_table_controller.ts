@@ -2,13 +2,14 @@ import { Controller } from "@hotwired/stimulus"
 import {
   themeQuartz,
   createGrid,
+  GridApi,
 } from "ag-grid-community";
 
 // Connects to data-controller="report-table"
 export default class extends Controller {
   static targets = ["table", "grid"]
   filterRange = "today"
-  gridApi = null
+  gridApi:GridApi //add support for backend types
   gridOptions = {
     theme: themeQuartz,
     rowData: [],
