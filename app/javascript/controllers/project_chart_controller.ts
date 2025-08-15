@@ -46,14 +46,20 @@ export default class extends Controller {
           formatter: formatter
         },
         legend: {
-          type: 'scroll',
+          orient: 'vertical',
+          top:'3%',
+          left:'0',
+          height:'50px',
           data: legend
+        },
+        labelLine: {
+          show: false
         },
         series: [
           {
             name: "Project hours",
             type: 'pie',
-            radius: '60%',
+            radius: ['40%', '70%'],
             data: data
           }
 
@@ -66,10 +72,7 @@ export default class extends Controller {
     } catch (e) {
       this.chart.hideLoading()
       this.chart.clear()
-            this.chartContainerTarget.insertAdjacentHTML(
-        "beforeend",
-        `<p class="mt-2 text-sm text-red-600">Failed to load data</p>`
-            )
+      this.chartContainerTarget.innerHTML = `<p class="text-center">Data couldn't be loaded</p>`
       console.error(e)
     }
 
