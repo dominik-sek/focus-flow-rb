@@ -40,7 +40,6 @@ export default class extends Controller {
 
   close() {
     this.toastDefaultTarget.classList.add("toast-closed")
-    this.toastDefaultTarget.classList.remove("toast-visible")
 
   }
 }

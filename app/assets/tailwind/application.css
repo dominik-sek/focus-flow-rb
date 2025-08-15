@@ -26,6 +26,41 @@
     }
   }
 
+  @keyframes showDropdown {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1.0);
+    }
+  }
+
+  @keyframes hideDropdown {
+
+    from {
+      opacity: 1;
+      transform: scale(1.0);
+    }
+
+    to {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  }
+
+  .dropdown-expanded {
+    animation: showDropdown 0.15s forwards;
+    pointer-events: auto;
+  }
+
+  .dropdown-hidden {
+    animation: hideDropdown 0.15s forwards;
+    pointer-events: none;
+  }
+
   .toast-visible {
     animation: toastIn 0.3s forwards;
     z-index: 50;
@@ -34,9 +69,9 @@
 
   .toast-closed {
     animation: toastOut 0.3s forwards;
-    z-index: -50;
     pointer-events: none;
   }
+
 
 
 }

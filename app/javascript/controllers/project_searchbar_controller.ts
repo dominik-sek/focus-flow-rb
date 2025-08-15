@@ -1,78 +1,96 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="project-searchbar"
 export default class extends Controller {
-    static targets = ["projectSearchbarInput", "projectList"]
-    declare readonly projectSearchbarInputTarget: HTMLInputElement
-    declare readonly projectListTarget: HTMLDivElement
-    declare readonly projectListTargets: HTMLDivElement[]
-    projectList: unknown[] = []
-    filteredProjects: unknown[] = []
+    static targets = ["projectSearchbarInput", "projectList"];
+    declare readonly projectSearchbarInputTarget: HTMLInputElement;
+    declare readonly projectListTarget: HTMLDivElement;
+    declare readonly projectListTargets: HTMLDivElement[];
+    projectList: unknown[] = [];
+    filteredProjects: unknown[] = [];
+    isOpen: boolean = false;
+    isClosed: boolean = true;
 
     connect(): void {
-        document.addEventListener("click", this.checkIfOutsideClick.bind(this))
-        this.getUserProjects()
+        document.addEventListener("pointerdown", this.checkIfOutsideClick.bind(this));
+        this.projectSearchbarInputTarget.addEventListener("focus", () => this.projectSearchbarInputTarget.select());
+        this.getUserProjects();
     }
-    search(event: Event & { target: HTMLInputElement }) {
+    open() {
+        if(this.isOpen) return
+        this.projectListTarget.classList.remove("hidden");
+        this.projectSearchbarInputTarget.classList.remove("rounded-lg");
+        this.projectSearchbarInputTarget.classList.add("rounded-t-lg", "border-b-0");
+        this.projectListTarget.classList.add("dropdown-expanded");
+        this.projectListTarget.classList.remove("dropdown-hidden");
+        this.isOpen = true;
+        this.isClosed = false;
+    }
 
-        this.filterProjectList(event.target.value)
-        this.projectListTarget.classList.remove("hidden")
+    search(event: Event & { target: HTMLInputElement; }) {
+
+        this.filter(event.target.value);
+        this.open();
 
         if (this.filteredProjects.length === 0) {
-            this.projectListTarget.replaceChildren(this.makeInfo('No projects matching this name'))
+            this.projectListTarget.replaceChildren(this.makeInfo('No projects matching this name'));
             return;
         }
 
         const nodes = this.filteredProjects.map((project) => {
-            const div = document.createElement('div')
-            div.className = "p-1"
-            div.textContent = project.name
-            div.addEventListener("click", () => {
-                this.close()
-                this.projectSearchbarInputTarget.value = project.name
+            const div = document.createElement('div');
+            div.className = "w-full text-left p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer";
+            div.textContent = project.name;
+            div.addEventListener("pointerdown", () => {
+                this.close();
+                this.projectSearchbarInputTarget.value = project.name;
                 window.dispatchEvent(new CustomEvent("project:selected", {
                     detail: {
                         project_id: project.id,
                         project_name: project.name
                     }
-                }))
+                }));
 
-            })
-            return div
-        })
-        this.projectListTarget.replaceChildren(...nodes)
+            });
+            return div;
+        });
+        this.projectListTarget.replaceChildren(...nodes);
     }
 
     makeInfo(text: string) {
-        const div = document.createElement("div")
-        div.className = "p-2 text-sm text-muted-foreground"
-        div.textContent = text
-        return div
+        const div = document.createElement("div");
+        div.className = "p-2 text-sm text-muted-foreground";
+        div.textContent = text;
+        return div;
     }
 
-    filterProjectList(phrase: string) {
-        this.filteredProjects = this.projectList.filter((project) => (project.name.toLowerCase().includes(phrase.toLowerCase())))
+    filter(phrase: string) {
+        const phraseLower = phrase.toLowerCase();
+        this.filteredProjects = this.projectList.filter((project) => (project.name.toLowerCase().includes(phraseLower)));
     }
 
     async getUserProjects() {
-        const res = await fetch('api/projects')
-        const data = await res.json()
-        this.projectList = data
-        this.filteredProjects = data
+        const res = await fetch('api/projects');
+        const data = await res.json();
+        this.projectList = data;
+        this.filteredProjects = data;
     }
+
     checkIfOutsideClick(e: Event) {
-        const target = e.target as Node
+        const target = e.target as Node;
         if (!this.element.contains(target)) {
-            this.close()
+            this.close();
         }
 
     }
     close() {
-        this.filteredProjects = []
-        this.projectListTarget.classList.add("hidden")
-        // console.log('closing')
+        if (this.isClosed) return;
+        this.filteredProjects = [];
+        this.projectSearchbarInputTarget.classList.remove("rounded-t-lg", "border-b-0");
+        this.projectSearchbarInputTarget.classList.add('rounded-lg');
+        this.projectListTarget.classList.remove("dropdown-expanded");
+        this.projectListTarget.classList.add("dropdown-hidden");
+        this.isClosed = true;
+        this.isOpen = false;
     }
-
-
-
 }
