@@ -11,7 +11,11 @@ export default class extends Controller {
   option?: EChartsOption;
 
   async refresh() {
-    this.chart.showLoading('default')
+    this.chart.showLoading('default', {
+      text: 'Loading...',
+      textColor:'#ffffff',
+      maskColor:'transparent'
+    })
     await this.getProjectHours();
   }
 
@@ -22,7 +26,6 @@ export default class extends Controller {
   }
   disconnect(): void {
     window.removeEventListener("time-entry:submitted", this.refresh);
-
   }
 
   async getProjectHours() {
