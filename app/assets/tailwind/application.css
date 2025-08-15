@@ -53,7 +53,7 @@
 
   .dropdown-expanded {
     animation: showDropdown 0.15s forwards;
-    pointer-events: auto;
+    pointer-events: auto !important;
   }
 
   .dropdown-hidden {

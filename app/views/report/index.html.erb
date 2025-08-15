@@ -12,15 +12,16 @@
             )
       %>
   </div>
-  <div data-controller="report-table" class="flex flex-col gap-2">
-    <div class="flex gap-2 w-full items-center justify-center">
+      <div class="flex gap-2 w-full items-center">
       <!-- action buttons -->
       Generate to:
       <%= link_to 'XLSX',
         generate_report_path,
         data: {filters_component_target: "exportLink"},
-        class: "border border-gray-600 px-6 py-2 rounded-xl bg-gray-800" %>
+        class: "border border-gray-600 px-6 py-2 rounded-xl bg-gray-800 cursor-pointer hover:bg-gray-700" %>
     </div>
+  <div class="h-[1px] bg-gray-700"> </div>
+  <div data-controller="report-table" class="flex flex-col gap-2">
     <div class="flex gap-2 flex-1 h-full ">
       <div data-ag-theme-mode="dark-blue" id="tableGrid" data-report-table-target="grid" class="w-full h-[400px] min-w-0 ">
       </div>
