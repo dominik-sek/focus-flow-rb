@@ -5,7 +5,7 @@
     <div data-controller="timer" class="flex flex-col gap-2 h-full justify-around">
       <div>
         <input type="text" id="task-name" data-timer-target="taskName" data-action="input->timer#taskNameChanged" placeholder="Enter task name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-        <%= render partial: "shared/project_select" %>
+        <%= render partial: "project_select" %>
       </div>
       <div class="flex gap-2 w-full justify-between">
         <span class="text-3xl font-bold" data-timer-target="timerDisplay" id="timer-display">00:00:00</span>
@@ -26,24 +26,11 @@
     <div data-project-chart-target="chartContainer" class=" z-[999]! w-64 md:w-full! h-64 flex justify-center items-center">
     </div>
   </div>
-  <div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
+  <div data-controller="time-table" class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm  dark:bg-gray-800 dark:border-gray-700">
     <h2 class="text-xl font-semibold mb-4">Recent activity</h2>
-    <div data-controller="time-table" class="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table class="break-words min-w-lg text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-auto w-full">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th class="px-6 py-3">Task name</th>
-            <th class="px-6 py-3">Start</th>
-            <th class="px-6 py-3">Finish</th>
-            <th class="px-6 py-3">Project</th>
-            <th class="px-6 py-3">Duration</th>
-          </tr>
-        </thead>
-        <%= render partial: "shared/table_skeleton" %>
-        <tbody data-time-table-target="tbody">
-          <!-- stimulus data -->
-        </tbody>
-      </table>
+    <div  class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div data-ag-theme-mode="dark-blue" data-time-table-target="tableGrid" class="w-full h-[100px] min-w-0 ">
+      </div>
     </div>
   </div>
 </div>

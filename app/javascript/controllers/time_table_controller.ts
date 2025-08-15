@@ -1,14 +1,36 @@
 import { Controller } from "@hotwired/stimulus"
+import { createGrid, GridApi, themeQuartz } from "ag-grid-community"
+import dayjs from "dayjs"
+import { formatDuration } from "../helpers/formatDuration"
 
 // Connects to data-controller="time-table"
 export default class extends Controller {
-  static targets = ['tbody', 'skeleton']
-  declare readonly tbodyTarget: HTMLTableSectionElement
-  declare readonly skeletonTarget: HTMLDivElement
-  
+  static targets = ['tableGrid']
+  declare readonly tableGridTarget: HTMLDivElement
+
+  gridApi!: GridApi
+  gridOptions = {
+    theme: themeQuartz,
+    suppressServerSideFullWidthLoadingRow: true,
+    rowData: [],
+        autoSizeStrategy: {
+        type: 'fitGridWidth',
+    },
+    columnDefs: [
+      { field: "name", headerName: 'Task name' },
+      { field: "duration", headerName: 'Duration' },
+      { field: "started_at", headerName: 'Started at' },
+      { field: "project", headerName: "Project name" }
+    ]
+  }
+
   connect() {
     this.loadEntries()
     window.addEventListener("time-entry:submitted", this.refresh.bind(this))
+    this.gridApi = createGrid(
+      this.tableGridTarget,
+      this.gridOptions,
+    );
   }
 
   disconnect() {
@@ -18,52 +40,33 @@ export default class extends Controller {
   refresh() {
     this.loadEntries()
   }
+
   async loadEntries() {
-    this.showLoader()
 
     try {
-      const response = await fetch("/api/time_entry/stats?range=this_month")
+      const response = await fetch("/api/time_entry/stats")
       const json = await response.json()
       const entries = json.entries || json
+      const formattedEntries = entries.slice(0, 5).map((entry) => {
 
-      this.tbodyTarget.innerHTML = entries.map(entry => this.buildRow(entry)).join("")
-      if (entries.length === 0) {
-        this.tbodyTarget.innerHTML = "<tr><td colspan='4' class='px-6 py-4'>No entries yet, they will be added automatically after you stop the timer!</td></tr>"
-      }
+        return {
+          ...entry,
+          duration: formatDuration(entry.duration),
+          started_at: dayjs(entry.started_at).format('YYYY/MM/DD, HH:mm:ss'),
+          project: entry.project?.name || "No project"
+        }
+
+      })
+
+      this.gridApi.setGridOption('rowData', formattedEntries)
+      this.tableGridTarget.classList.remove('h-[100px]')
+      this.gridApi.setGridOption('domLayout', 'autoHeight')
+
     } catch (e) {
       console.error("Failed to load entries", e)
-      this.tbodyTarget.innerHTML = "<tr><td colspan='4' class='px-6 py-4'>Error loading data</td></tr>"
-    } finally {
-      this.hideLoader()
-    }
+      this.gridApi.setGridOption('domLayout', 'normal')
+
+    } 
   }
 
-  showLoader() {
-    this.skeletonTarget.classList.remove("hidden")
-  }
-
-  hideLoader() {
-    this.skeletonTarget.classList.add("hidden")
-  }
-
-  buildRow(entry: unknown) {
-    const formatTime = iso => new Date(iso).toLocaleString()
-    const formatDuration = secs => {
-      const h = Math.floor(secs / 3600).toString().padStart(2, '0')
-      const m = Math.floor((secs % 3600) / 60).toString().padStart(2, '0')
-      const s = (secs % 60).toString().padStart(2, '0')
-      return `${h}:${m}:${s}`
-    }
-
-
-    return `
-      <tr class="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800 border-b dark:border-gray-700">
-        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white max-w-xs truncate " title="${entry.name}">${entry.name}</td>
-        <td class="px-6 py-4 whitespace-nowrap min-w-fit">${formatTime(entry.started_at)}</td>
-        <td class="px-6 py-4 whitespace-nowrap min-w-fit">${formatTime(entry.finished_at)}</td>
-        <td class="px-6 py-4 whitespace-nowrap min-w-fit">${entry.project?.name || "No project"}</td>
-        <td class="px-6 py-4">${formatDuration(entry.duration)}</td>
-      </tr>
-    `
-  }
 }
