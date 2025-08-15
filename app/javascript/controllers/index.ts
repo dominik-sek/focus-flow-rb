@@ -29,8 +29,5 @@ application.register("toast-message", ToastMessageController)
 import UserMenuController from "./user_menu_controller"
 application.register("user-menu", UserMenuController)
 
-import stats_cards_component_controller from '../../components/stats_cards_component_controller'
-application.register("stats-cards-component", stats_cards_component_controller)
-
 import filters_component_controller from '../../components/filters_component_controller'
 application.register("filters-component", filters_component_controller)

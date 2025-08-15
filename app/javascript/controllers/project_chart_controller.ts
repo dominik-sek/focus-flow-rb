@@ -25,15 +25,6 @@ export default class extends Controller {
 
   }
 
-
-
-  showLoader() {
-    this.chartContainerTarget.innerHTML =
-      `
-      
-      `;
-  }
-
   async getProjectHours() {
     try {
       const res = await fetch('api/projects/summary');

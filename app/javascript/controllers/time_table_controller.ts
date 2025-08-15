@@ -3,6 +3,9 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="time-table"
 export default class extends Controller {
   static targets = ['tbody', 'skeleton']
+  declare readonly tbodyTarget: HTMLTableSectionElement
+  declare readonly skeletonTarget: HTMLDivElement
+  
   connect() {
     this.loadEntries()
     window.addEventListener("time-entry:submitted", this.refresh.bind(this))
@@ -43,7 +46,7 @@ export default class extends Controller {
     this.skeletonTarget.classList.add("hidden")
   }
 
-  buildRow(entry) {
+  buildRow(entry: unknown) {
     const formatTime = iso => new Date(iso).toLocaleString()
     const formatDuration = secs => {
       const h = Math.floor(secs / 3600).toString().padStart(2, '0')

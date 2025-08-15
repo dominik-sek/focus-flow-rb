@@ -1,17 +1,23 @@
 import { Controller } from "@hotwired/stimulus"
 
+type ToastKind = "success" | "info" | "error"
+type ToastDetail = { message: string; type?: ToastKind; duration?: number; }
+
 export default class extends Controller {
   static targets = ["toastDefault", "messageText"]
-
+  declare readonly toastDefaultTarget: HTMLElement
+  declare readonly messageTextTarget: HTMLElement
+  private onShow = (e: Event) => this.show(e as CustomEvent<ToastDetail>)
+  private timeout?: ReturnType <typeof window.setTimeout>
   connect() {
-    window.addEventListener("toast:show", this.show.bind(this))
+    window.addEventListener("toast:show", this.onShow)
   }
 
   disconnect() {
-    window.removeEventListener("toast:show", this.show.bind(this))
+    window.removeEventListener("toast:show", this.onShow)
   }
 
-  show(event) {
+  show(event: CustomEvent<ToastDetail>) {
     const { message, type = "success", duration = 3000 } = event.detail
 
     this.toastDefaultTarget.classList.remove("toast-closed", "hidden")

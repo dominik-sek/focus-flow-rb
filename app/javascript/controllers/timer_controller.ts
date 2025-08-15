@@ -2,7 +2,10 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["timerDisplay", "taskName", "toggleButton"]
-  timerInterval = null
+  declare readonly timerDisplayTarget: HTMLElement
+  declare readonly taskNameTarget: HTMLInputElement
+  declare readonly toggleButtonTarget: HTMLButtonElement
+  private timerInterval?: ReturnType<typeof window.setInterval>
   hours = 0
   minutes = 0
   seconds = 0
@@ -26,7 +29,7 @@ export default class extends Controller {
     this.updateDisplay()
     if (this.timerInterval) {
       clearInterval(this.timerInterval)
-      this.timerInterval = null
+      this.timerInterval = 0
     }
     this.isRunning = false
     this.toggleButtonTarget.textContent = "Start"
@@ -145,7 +148,7 @@ export default class extends Controller {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
 
       },
       body: JSON.stringify(data)

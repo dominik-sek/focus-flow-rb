@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="project-select"
 export default class extends Controller {
   static targets = ["projectSelect"]
+  declare readonly projectSelectTarget: HTMLSelectElement
 
   connect() {
     this.get()
@@ -25,7 +26,7 @@ export default class extends Controller {
             return;
           }
 
-          this.projectSelectTarget.innerHTML += projects.map((project) => this.optionsBuilder(project));
+          this.projectSelectTarget.innerHTML += projects.map((project: unknown) => this.optionsBuilder(project));
         }
       })
       .catch(err => {
@@ -34,13 +35,13 @@ export default class extends Controller {
       })
   }
 
-  optionsBuilder(project) {
+  optionsBuilder(project: unknown) {
     return `
       <option value=${project.id}>${project.name}</option>
       `
   }
 
-  handleChange(event) {
+  handleChange(event: Event & {target: HTMLSelectElement}) {
     const selected = event.target.value
     if (selected === "new") {
       const name = prompt("Enter the name of your new project:")
@@ -50,7 +51,7 @@ export default class extends Controller {
         this.projectSelectTarget.value = ""
       }
     } else {
-      const projectName = event.target.options[event.target.selectedIndex].textContent;
+      const projectName = event.target?.options[event.target.selectedIndex].textContent;
       const projectId = selected;
       window.dispatchEvent(new CustomEvent("project:selected", {
         detail: {
@@ -61,13 +62,13 @@ export default class extends Controller {
     }
   }
 
-  async createProject(name) {
+  async createProject(name: string) {
     try {
       const res = await fetch("/api/project", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
         },
         body: JSON.stringify({ project: { name } })
       })
