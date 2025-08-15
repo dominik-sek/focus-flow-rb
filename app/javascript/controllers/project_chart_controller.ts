@@ -37,7 +37,7 @@ export default class extends Controller {
         this.chart.clear();
         return;
       }
-      const data = json.map((item: unknown) => ({ value: item.duration, name: item.name }));
+      const data = json.map((item: {name: string, duration: number}) => ({ name: item.name, value: item.duration }));
       const legend = json.map((item: unknown) => item.name);
       const formatter = (params: unknown) => { return `${params.name}: ${formatDuration(params.value)} hours`; };
       const option: EChartsOption = {
@@ -48,19 +48,21 @@ export default class extends Controller {
         legend: {
           orient: 'vertical',
           top:'3%',
+          align:'left',
           left:'0',
           height:'50px',
           data: legend
-        },
-        labelLine: {
-          show: false
         },
         series: [
           {
             name: "Project hours",
             type: 'pie',
             radius: ['40%', '70%'],
-            data: data
+            data: data,
+            top:'15%',
+            label: {
+              show: false
+            },
           }
 
         ]
