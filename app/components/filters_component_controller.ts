@@ -72,13 +72,10 @@ export default class extends Controller {
     this.updateExportLink()
   }
 
- 
-
   changeFilter(event: Event & { target: HTMLButtonElement }) {
     const btn = event.currentTarget || event.target.closest("button");
     if (!btn) return;
     const range = btn.dataset.filter;
-    console.log(range)
     this.parseRangeToDate(range);
 
     this.setActiveByName(range);
@@ -103,11 +100,13 @@ export default class extends Controller {
     );
   }
 
-  setActive(buttonEl) {
-    this.filterButtonTargets.forEach((el) => {
+  setActive(buttonEl: HTMLButtonElement) {
+    this.filterButtonTargets.forEach((el: HTMLButtonElement) => {
       el.dataset.active = "false";
+      el.disabled = false
       el.setAttribute("aria-pressed", "false");
     });
+    buttonEl.disabled = true
     buttonEl.dataset.active = "true";
     buttonEl.setAttribute("aria-pressed", "true");
   }

@@ -50,7 +50,6 @@ export default class extends Controller {
     if (saved) {
       const { isActive, startedAt, taskName, projectName } = JSON.parse(saved)
       if (isActive) {
-        console.log('found a timer')
         const elapsedSinceClosed = Math.floor((new Date() - new Date(startedAt)) / 1000)
         this.taskNameTarget.value = taskName
         this.selectedProject = projectName
@@ -150,7 +149,6 @@ export default class extends Controller {
       duration: duration,
       project_id: this.selectedProject?.project_id //nullable
     }
-    console.log(data)
 
     await fetch('/api/time_entry', {
       method: 'POST',
