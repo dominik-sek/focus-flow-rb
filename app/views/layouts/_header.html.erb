@@ -12,8 +12,8 @@
         </svg>
       </button>
    
-      <div data-user-menu-target="dropdownMenu" class="invisible md:visible absolute md:relative left-0 w-full" id="navbar-hamburger">
-        <ul class="font-medium flex flex-col p-4  mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800  dark:border-gray-700">
+      <div data-user-menu-target="dropdownMenu" class="invisible md:visible absolute md:relative left-0 w-full " id="navbar-hamburger">
+        <ul class="font-medium flex gap-2 flex-col p-4 mt-4 border-gray-100 rounded-t-0 rounded-b-lg border-b bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 dark:bg-gray-800 dark:border-gray-700">
                        <% @nav_links = [
             {
               name: "Home", path: root_path
@@ -33,7 +33,7 @@
                       link[:path],
                       class: [
                         "block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent",
-                        current_page?(link[:path]) && "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+                        current_page?(link[:path]) && "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500 hover:none"
                       ] %>
           <% end %>
       </div>

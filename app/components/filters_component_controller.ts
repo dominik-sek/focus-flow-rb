@@ -3,6 +3,7 @@ import dayjs, { OpUnitType } from "dayjs";
 export default class extends Controller {
   static targets = ["filterButton", "fromDateInput", "toDateInput", "exportLink"];
   declare readonly filterButtonTarget: HTMLButtonElement
+  declare readonly filterButtonTargets: HTMLButtonElement[]
   declare readonly fromDateInputTarget: HTMLButtonElement
   declare readonly toDateInputTarget: HTMLButtonElement
   declare readonly exportLinkTarget: HTMLLinkElement
@@ -33,7 +34,7 @@ export default class extends Controller {
     this.setUrlToMatchRange(true)
   }
 
-  parseRangeToDate(range: string) {
+  parseRangeToDate(range?: string) {
     switch (range) {
       case "today":
         this.setUrlToMatchRange(false,"day")
@@ -75,6 +76,7 @@ export default class extends Controller {
   changeFilter(event: Event & { target: HTMLButtonElement }) {
     const btn = event.currentTarget || event.target.closest("button");
     if (!btn) return;
+    if (!(btn instanceof HTMLButtonElement)) return;
     const range = btn.dataset.filter;
     this.parseRangeToDate(range);
 
@@ -82,7 +84,7 @@ export default class extends Controller {
     this.emitRange(range);
   }
 
-  setActiveByName(name) {
+  setActiveByName(name?: string) {
     const btn = this.filterButtonTargets.find(
       (el) => el.dataset.filter === name
     );
@@ -91,7 +93,7 @@ export default class extends Controller {
     }
   }
 
-  emitRange(range) {
+  emitRange(range?: string) {
     window.dispatchEvent(
       new CustomEvent("reportFilter:change", {
         detail: { filter: range },

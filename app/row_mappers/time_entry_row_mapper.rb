@@ -6,19 +6,20 @@
           day: e[:date].strftime("%A"),
           start: e[:day_start].strftime("%H:%M"),
           finish: e[:day_end].strftime("%H:%M"),
-          duration: duration_to_hours(e[:total_duration]),
-          duration_decimal: e[:total_duration]
+          duration: seconds_to_hms(e[:total_duration]),
+          duration_decimal: duration_to_decimal(e[:total_duration])
         }
       end
     end
 
 
 
-    def self.duration_to_hours(seconds)
-      hours, mins = (seconds/60).to_i.divmod(60)
-      "#{hours}:#{mins}"
+    def self.seconds_to_hms(seconds)
+      # this only adds up to 24hrs:
+      Time.at(seconds).utc.strftime "%H:%M:%S"
     end
 
-    def self.duration_to_decimal
+    def self.duration_to_decimal(seconds)
+      (seconds/3600.0).round(2)
     end
   end
