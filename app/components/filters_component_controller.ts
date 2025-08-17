@@ -8,7 +8,7 @@ export default class extends Controller {
   declare readonly toDateInputTarget: HTMLButtonElement
   declare readonly exportLinkTarget: HTMLLinkElement
 
-  DATE_FORMAT_API = "YYYY-MM-DD HH:MM:SS"
+  DATE_FORMAT_API = "YYYY-MM-DD HH:mm:ss"
   DATE_FORMAT_INPUT = "YYYY-MM-DD"
   fromDate = "";
   toDate = "";

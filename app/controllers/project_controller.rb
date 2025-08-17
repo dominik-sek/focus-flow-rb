@@ -10,6 +10,7 @@ class ProjectController < ApplicationController
     render json: @projects, status: :ok
   end
 
+  # todo: move this to time entries
   def hours_per_project
     today_range = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
 

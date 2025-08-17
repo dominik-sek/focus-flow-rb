@@ -45,6 +45,7 @@ gem "dotenv-rails"
 gem "view_component"
 gem "caxlsx"
 gem "caxlsx_rails"
+gem "rails-i18n"
 
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
@@ -65,6 +66,7 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "annotaterb"
+  gem "pry"
 end
 
 group :test do

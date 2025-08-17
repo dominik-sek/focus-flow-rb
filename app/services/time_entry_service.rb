@@ -26,15 +26,15 @@ class TimeEntryService
       entries_by_day = entries.group_by { |e| e.started_at.to_date }
 
       result[:grouped_by_day] = agg_rows.map do |row|
-  day = row.read_attribute("day") # Date
-  {
-    date: day,
-    total_duration: row.read_attribute("total_duration"),
-    day_start: row.read_attribute("day_start"),
-    day_end: row.read_attribute("day_end"),
-    entries: entries_by_day[day] || []
-  }
-end
+        day = row.read_attribute("day")
+        {
+          date: day,
+          total_duration: row.read_attribute("total_duration"),
+          day_start: row.read_attribute("day_start"),
+          day_end: row.read_attribute("day_end"),
+          entries: entries_by_day[day] || []
+        }
+      end
     end
 
     result
