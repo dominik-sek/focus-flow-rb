@@ -59,11 +59,26 @@ export default class extends Controller {
 
     makeInfo(text: string) {
         const div = document.createElement("div");
-        div.className = "p-2 text-sm text-muted-foreground";
-        div.textContent = text;
+        const divInfo = document.createElement("p")
+        const newProjectButton = document.createElement('button');
+
+        divInfo.className = "p-2"
+        divInfo.textContent = text
+
+        newProjectButton.className = "w-full text-left p-2  dark:bg-gray-600 cursor-pointer";
+        newProjectButton.textContent = "➕ Add new project"
+        newProjectButton.setAttribute("data-modal-target", "newProject")
+        newProjectButton.setAttribute("data-action", "click->modal#open")
+
+        div.className = "text-sm text-muted-foreground divide-y-1 flex flex-col p-2 justify-around";
+        div.appendChild(divInfo)
+        div.appendChild(newProjectButton)
         return div;
     }
 
+    somethingDynamic() {
+        console.log('dynamic')
+    }
     filter(phrase: string) {
         const phraseLower = phrase.toLowerCase();
         this.filteredProjects = this.projectList.filter((project) => (project.name.toLowerCase().includes(phraseLower)));

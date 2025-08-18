@@ -5,4 +5,7 @@ export default class extends Controller {
   connect() {
     console.log('hello modal')
   }
+  open() {
+    console.log("pressed open")
+  }
 }

@@ -55,7 +55,6 @@ export default class extends Controller {
       duration: formatDuration(entry.duration),
       started_at: dayjs(entry.started_at).format('YYYY/MM/DD, HH:mm:ss')
     }))
-    console.log(dataEntriesDateFormatted)
     this.gridApi.setGridOption('rowData', dataEntriesDateFormatted)
   }
 }
