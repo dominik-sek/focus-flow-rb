@@ -23,7 +23,8 @@
     </div>
     <% if user_signed_in? %>
       <%= render 'layouts/header' %>
-      <main class="container mt-4 px-4 pb-10 flex flex-col mx-auto justify-center items-center text-gray-900 dark:text-white ">
+      <main class="relative container mt-4 px-4 pb-10 flex flex-col mx-auto justify-center items-center text-gray-900 dark:text-white ">
+        <%= render partial: 'shared/modal' %>
         <%= yield %>
       </main>
     <% else %>

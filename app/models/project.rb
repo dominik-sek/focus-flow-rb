@@ -19,4 +19,7 @@
 class Project < ApplicationRecord
   belongs_to :user
   has_many :time_entries
+
+
+  validates :name, presence: true
 end

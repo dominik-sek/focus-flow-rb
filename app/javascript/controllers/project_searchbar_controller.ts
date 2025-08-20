@@ -68,16 +68,21 @@ export default class extends Controller {
         newProjectButton.className = "w-full text-left p-2  dark:bg-gray-600 cursor-pointer";
         newProjectButton.textContent = "➕ Add new project"
         newProjectButton.setAttribute("data-modal-target", "newProject")
-        newProjectButton.setAttribute("data-action", "click->modal#open")
+        newProjectButton.setAttribute("data-action", "click->project-searchbar#openModal")
 
         div.className = "text-sm text-muted-foreground divide-y-1 flex flex-col p-2 justify-around";
         div.appendChild(divInfo)
         div.appendChild(newProjectButton)
         return div;
     }
-
+    openModal() {
+        window.dispatchEvent(new CustomEvent("modal:open", {
+            detail: {
+               name: this.projectSearchbarInputTarget.value
+           }
+       }));
+    }
     somethingDynamic() {
-        console.log('dynamic')
     }
     filter(phrase: string) {
         const phraseLower = phrase.toLowerCase();
