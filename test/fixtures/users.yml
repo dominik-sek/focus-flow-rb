@@ -17,10 +17,10 @@
 #
 one:
   email: MyString
-  password: MyString
+  password_digest: <%= BCrypt::Password.create("secret") %>
   last_login: 2025-08-04 17:36:00
 
 two:
   email: MyString
-  password: MyString
+  password_digest: <%= BCrypt::Password.create("secret") %>
   last_login: 2025-08-04 17:36:00
