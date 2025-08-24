@@ -67,12 +67,14 @@ group :development do
   gem "web-console"
   gem "annotaterb"
   gem "pry"
+  gem "rspec-rails"
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "rspec-rails"
 end
 
 gem "jsbundling-rails", "~> 1.3"

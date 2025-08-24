@@ -11,6 +11,15 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_08_05_195636) do
+  create_schema "dziekanat"
+  create_schema "kadry"
+  create_schema "kursory"
+  create_schema "poczta_olap"
+  create_schema "poczta_oltp"
+  create_schema "rodo"
+  create_schema "roznosci"
+  create_schema "wf"
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
