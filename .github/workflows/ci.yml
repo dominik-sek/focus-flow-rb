@@ -64,7 +64,6 @@ jobs:
       postgres:
         image: postgres:17-alpine
         env:
-          RAILS_ENV: test
           POSTGRES_USER: ${{ env.DB_USERNAME }}
           POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
           POSTGRES_DB: ${{ env.DB_NAME }}
@@ -90,7 +89,6 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: bundle exec rspec spec
 
 
