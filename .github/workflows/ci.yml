@@ -62,7 +62,12 @@ jobs:
       DB_HOST: localhost
     services:
       postgres:
-        image: postgres
+        image: postgres:17-alpine
+        env:
+          RAILS_ENV: test
+          POSTGRES_USER: ${{ env.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
         ports:
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -80,11 +85,6 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
       - name: Setup db
-        env:
-          RAILS_ENV: test
-          POSTGRES_USER: ${{ env.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
-          POSTGRES_DB: ${{ env.DB_NAME }}
         run: bin/rails db:test:prepare
 
       - name: Run tests
