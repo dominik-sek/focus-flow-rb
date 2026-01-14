@@ -59,6 +59,7 @@ development:
 test:
   <<: *default
   database: focus_flow_test_rb
+  host: <%= ENV['DB_HOST'] %>
   username: <%= ENV["DB_USERNAME"] %>
   password: <%= ENV["DB_PASSWORD"] %>
   
