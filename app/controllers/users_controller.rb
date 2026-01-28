@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   before_action :redirect_if_authenticated, only: [ :create, :new ]
   # before_action :authenticate_user!, only: [ :edit, :destroy, :update ]
-
   def new
     @user = User.new
   end
@@ -11,6 +10,9 @@ class UsersController < ApplicationController
     if @user.save
       login(@user)
       redirect_to root_path, notice: "Success!"
+    else
+      flash.now[:alert] = "#{@user.errors.full_messages.to_sentence}"
+      render :new, status: :unprocessable_entity
     end
   end
 

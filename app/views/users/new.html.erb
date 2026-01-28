@@ -9,6 +9,11 @@
         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
           Create an account
         </h1>
+        <% if flash[:alert] %>
+          <div class="text-sm text-red-600 bg-red-50 border border-red-200 p-2 rounded mb-4">
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
         <%= form_with model: @user, url: sign_up_path, class:"space-y-4 md:space-y-6" do |form|  %>
           <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Your e-mail </label>
